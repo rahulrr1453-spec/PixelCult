@@ -31,98 +31,109 @@ export function Navbar() {
 
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-[200] transition-[background-color,backdrop-filter,border-color] duration-300 ${scrolled
-        ? "border-b border-white/10 bg-black/80 backdrop-blur-2xl"
-        : "border-b border-transparent bg-transparent"
-        }`}
-    >
+    <>
+      <header
+        className={`fixed inset-x-0 top-0 z-[200] transition-[background-color,backdrop-filter,border-color] duration-300 ${scrolled
+          ? "border-b border-white/10 bg-black/80 backdrop-blur-2xl"
+          : "border-b border-transparent bg-transparent"
+          }`}
+      >
 
 
-      <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-4 md:px-12 md:py-4">
-        <Link
-          href="/"
-          className="group flex items-center gap-4 transition-transform hover:scale-[1.01]"
-        >
-          <img
-            src="/bglogo.png"
-            alt="PixelCult Icon"
-            className="h-8 w-auto object-contain drop-shadow-[0_0_8px_rgba(52,211,153,0.4)]"
-          />
-          <img
-            src="/bgtext.png"
-            alt="PixelCult"
-            className="h-4 w-20 object-contain brightness-125"
-          />
-        </Link>
-
-        <div className="flex items-center gap-3 lg:gap-8">
-          <nav className="hidden items-center gap-8 lg:flex">
-            {["Engineering", "Works", "Training", "Team"].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="font-sans text-[11px] font-black uppercase tracking-[0.2em] text-zinc-300 transition-all hover:text-accent hover:tracking-[0.25em]"
-              >
-                {item}
-              </a>
-            ))}
-          </nav>
-
-          <a
-            href="#contact"
-            className="group hidden items-center gap-2 rounded-full border border-accent/20 bg-accent/5 px-5 py-2.5 font-sans text-[10px] font-black uppercase tracking-[0.2em] text-accent backdrop-blur-md transition-all duration-300 hover:bg-accent hover:text-black sm:inline-flex"
+        <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-4 md:px-12 md:py-4">
+          <Link
+            href="/"
+            className="group flex items-center gap-4 transition-transform hover:scale-[1.01]"
           >
-            Contact Us
-            <ArrowUpRight size={14} weight="bold" />
-          </a>
+            <img
+              src="/bglogo.png"
+              alt="PixelCult Icon"
+              className="h-8 w-auto object-contain drop-shadow-[0_0_8px_rgba(52,211,153,0.4)]"
+            />
+            <img
+              src="/bgtext.png"
+              alt="PixelCult"
+              className="h-4 w-20 object-contain brightness-125"
+            />
+          </Link>
 
-          {/* Mobile Menu Toggle */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="relative z-[300] flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/10 text-foreground lg:hidden"
-            aria-label="Toggle Menu"
-          >
-
-
-            <AnimatePresence mode="wait">
-              {isOpen ? (
-                <motion.div
-                  key="close"
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
+          <div className="flex items-center gap-3 lg:gap-8">
+            <nav className="hidden items-center gap-8 lg:flex">
+              {["Engineering", "Works", "Training", "Team"].map((item) => (
+                <a
+                  key={item}
+                  href={`#${item.toLowerCase()}`}
+                  className="font-sans text-[11px] font-black uppercase tracking-[0.2em] text-zinc-300 transition-all hover:text-accent hover:tracking-[0.25em]"
                 >
-                  <X size={20} weight="bold" />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="open"
-                  initial={{ rotate: 90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: -90, opacity: 0 }}
-                >
-                  <List size={20} weight="bold" />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </button>
+                  {item}
+                </a>
+              ))}
+            </nav>
+
+            <a
+              href="#contact"
+              className="group hidden items-center gap-2 rounded-full border border-accent/20 bg-accent/5 px-5 py-2.5 font-sans text-[10px] font-black uppercase tracking-[0.2em] text-accent backdrop-blur-md transition-all duration-300 hover:bg-accent hover:text-black sm:inline-flex"
+            >
+              Contact Us
+              <ArrowUpRight size={14} weight="bold" />
+            </a>
+
+            {/* Mobile Menu Toggle */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="relative z-[300] flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/10 text-foreground lg:hidden"
+              aria-label="Toggle Menu"
+            >
+
+
+              <AnimatePresence mode="wait">
+                {isOpen ? (
+                  <motion.div
+                    key="close"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                  >
+                    <X size={20} weight="bold" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="open"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                  >
+                    <List size={20} weight="bold" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </button>
+          </div>
         </div>
-      </div>
+      </header>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu Overlay - Moved outside header to avoid stacking/clipping issues */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-            className="fixed inset-0 z-[250] flex flex-col bg-[#020617] lg:hidden"
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[300] flex flex-col bg-[#020617] lg:hidden"
             style={{ isolation: 'isolate' }}
           >
-
-
+            {/* Close button inside overlay */}
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1 }}
+              onClick={() => setIsOpen(false)}
+              aria-label="Close Menu"
+              className="absolute top-5 right-5 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/10 text-foreground transition-colors hover:border-accent/40 hover:bg-accent/10 hover:text-accent"
+            >
+              <X size={20} weight="bold" />
+            </motion.button>
 
             <div className="flex flex-col items-center justify-center flex-grow gap-6 px-6 pt-20">
               {["Engineering", "Works", "Training", "Team"].map((item, i) => (
@@ -152,7 +163,6 @@ export function Navbar() {
               </motion.a>
             </div>
 
-            
             <div className="p-12 border-t border-white/5 flex justify-between items-center">
               <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">PixelCult &copy; 2026</p>
               <div className="flex gap-4">
@@ -163,7 +173,6 @@ export function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
-
-    </header>
+    </>
   );
 }
