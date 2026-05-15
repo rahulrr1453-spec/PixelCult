@@ -12,7 +12,9 @@ export function DigitalCore() {
   const requestRef = useRef<number | null>(null);
 
   const scrollRef = useRef(0);
+  const gyroRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
   const originalZRef = useRef<Float32Array | null>(null);
+
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -66,6 +68,21 @@ export function DigitalCore() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
 
+    const handleOrientation = (e: DeviceOrientationEvent) => {
+      if (e.gamma !== null && e.beta !== null) {
+        gyroRef.current.targetX = (e.gamma / 90) * 0.5;
+        gyroRef.current.targetY = ((e.beta - 45) / 90) * 0.5;
+      }
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      gyroRef.current.targetX = (e.clientX / window.innerWidth - 0.5) * 0.2;
+      gyroRef.current.targetY = (e.clientY / window.innerHeight - 0.5) * 0.2;
+    };
+
+    window.addEventListener("deviceorientation", handleOrientation);
+    window.addEventListener("mousemove", handleMouseMove);
+
     const animate = () => {
       const time = Date.now() * 0.001;
       const progress = scrollRef.current;
@@ -75,8 +92,13 @@ export function DigitalCore() {
         const positions = particles.geometry.attributes.position.array as Float32Array;
         const originalZ = originalZRef.current;
 
+        // Smoothly interpolate gyro/mouse movement
+        gyroRef.current.x += (gyroRef.current.targetX - gyroRef.current.x) * 0.05;
+        gyroRef.current.y += (gyroRef.current.targetY - gyroRef.current.y) * 0.05;
+
         particles.rotation.z += 0.0015;
-        particles.rotation.y += 0.0008;
+        particles.rotation.y = (progress * 0.5) + (gyroRef.current.x * 2);
+        particles.rotation.x = gyroRef.current.y * 2;
 
         for (let i = 0; i < originalZ.length; i++) {
           const i3 = i * 3;
@@ -110,7 +132,10 @@ export function DigitalCore() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
+      window.removeEventListener("deviceorientation", handleOrientation);
+      window.removeEventListener("mousemove", handleMouseMove);
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
+
       renderer.dispose();
       if (containerRef.current) {
         containerRef.current.removeChild(renderer.domElement);

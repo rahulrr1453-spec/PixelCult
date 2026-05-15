@@ -7,9 +7,9 @@ type Props = {
 export function HudFrame({ corner, size = 22, className = "" }: Props) {
   const paths: Record<Props["corner"], string> = {
     tl: `M 2 ${size} L 2 2 L ${size} 2`,
-    tr: `M ${size - 20} 2 L ${size} 2 L ${size} ${size}`,
-    bl: `M 2 ${size - 20} L 2 ${size} L ${size} ${size}`,
-    br: `M ${size - 20} ${size} L ${size} ${size} L ${size} ${size - 20}`,
+    tr: `M 2 2 L ${size} 2 L ${size} ${size}`,
+    bl: `M 2 2 L 2 ${size} L ${size} ${size}`,
+    br: `M 2 ${size} L ${size} ${size} L ${size} 2`,
   };
   return (
     <svg
@@ -29,3 +29,4 @@ export function HudFrame({ corner, size = 22, className = "" }: Props) {
     </svg>
   );
 }
+

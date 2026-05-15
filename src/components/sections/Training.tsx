@@ -31,44 +31,45 @@ const COURSES = [
   },
 ];
 
-const LABS = [
+const PRACTICAL_PROJECTS = [
   {
-    title: "Cloud-Based SOC Lab",
-    subtitle: "Threat Detection & Alerting with AWS & Splunk",
+    title: "SOC & Security Operations",
+    subtitle: "Real-time Threat Detection with AWS & Splunk",
     stack: ["AWS EC2", "Splunk SIEM", "Linux", "Bash", "SPL"],
     achievements: [
-      "Architected and deployed a fully functional cloud-based SOC environment on AWS EC2 running Splunk SIEM.",
-      "Simulated SSH brute-force attacks and detected 100% of attack events within 2 minutes.",
-      "Implemented real-time alerting rules for brute-force threshold detection (5+ failed logins in 60s).",
-      "Designed Splunk dashboards visualizing attack trends and authentication failure timelines."
+      "Architect and deploy a fully functional cloud-based SOC environment on AWS EC2.",
+      "Simulate SSH brute-force attacks and detect 100% of attack events using custom SPL.",
+      "Implement real-time alerting rules for brute-force threshold detection.",
+      "Design Splunk dashboards for visualizing attack trends and failure timelines."
     ],
     icon: ShieldCheck,
   },
   {
-    title: "End-to-End SOC Lab",
-    subtitle: "MITRE ATT&CK Detection with Wazuh on AWS",
+    title: "End-to-End SIEM Deployment",
+    subtitle: "MITRE ATT&CK Detection with Wazuh",
     stack: ["Wazuh SIEM", "AWS EC2", "Kali Linux", "Hydra", "MITRE ATT&CK"],
     achievements: [
-      "Deployed a production-grade Wazuh SIEM instance on AWS EC2 and integrated a monitored endpoint.",
-      "Simulated real-world adversarial techniques using Kali Linux including SSH brute-force (Hydra).",
-      "Mapped detected attack activity to MITRE ATT&CK techniques (T1110, T1046).",
-      "Built dashboards visualizing top attack sources, event frequency, and attacker IPs."
+      "Deploy a production-grade Wazuh SIEM instance on AWS and integrate monitored endpoints.",
+      "Simulate real-world adversarial techniques using Kali Linux and Hydra.",
+      "Map detected attack activity to MITRE ATT&CK techniques (T1110, T1046).",
+      "Build live dashboards for visualizing top attack sources and event frequency."
     ],
     icon: TerminalWindow,
   },
   {
-    title: "Web App Penetration Testing Lab",
-    subtitle: "DVWA & OWASP Top 10 Exploitation",
+    title: "Vulnerability Assessment",
+    subtitle: "Web App Pentesting & OWASP Exploitation",
     stack: ["DVWA", "Burp Suite", "Kali Linux", "SQLi", "XSS"],
     achievements: [
-      "Executed a structured web penetration test covering OWASP Top 10 vulnerability categories.",
-      "Successfully exploited SQL Injection vulnerability to bypass authentication and extract database records.",
-      "Demonstrated Reflected XSS and used Burp Suite to intercept and modify HTTP request parameters.",
-      "Produced a structured vulnerability report including severity ratings (CVSS-aligned) and remediation guidance."
+      "Conduct structured web penetration tests covering OWASP Top 10 categories.",
+      "Exploit SQL Injection and XSS vulnerabilities in controlled environments.",
+      "Use Burp Suite to intercept and modify HTTP request parameters for testing.",
+      "Produce structured vulnerability reports with CVSS severity and remediation guidance."
     ],
     icon: Bug,
   },
 ];
+
 
 export function Training() {
   return (
@@ -82,8 +83,9 @@ export function Training() {
             Technical <span className="text-accent">Training.</span>
           </h2>
           <p className="mt-4 mx-auto max-w-3xl text-xl text-zinc-300">
-            We bridge the gap between academia and industry. Providing extensive technical courses and specializing in <span className="text-brand-accent font-bold">Final Year College Project Mentorship</span>.
+            We bridge the gap between academia and industry. Providing extensive technical courses with <span className="text-accent font-bold">hands-on project integration</span> and specializing in Final Year College Project Mentorship.
           </p>
+
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -109,30 +111,30 @@ export function Training() {
           ))}
         </div>
 
-        {/* Labs Section */}
+        {/* Projects Section */}
         <div className="mt-24 mb-16">
           <div className="mb-12">
             <h3 className="text-2xl font-bold text-foreground md:text-3xl">
-              Advanced <span className="text-accent">Lab Specializations.</span>
+              Project-Based <span className="text-accent">Practical Training.</span>
             </h3>
-            <p className="mt-2 text-zinc-400">Deep-dive technical environments for hands-on security engineering.</p>
+            <p className="mt-2 text-zinc-400">Industry-aligned training focused on building real-world security and software solutions.</p>
           </div>
 
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-            {LABS.map((lab, i) => (
+            {PRACTICAL_PROJECTS.map((project, i) => (
               <div
                 key={i}
                 className="group relative overflow-hidden rounded-2xl border border-white/5 bg-slate-950/40 p-8 transition-all hover:border-accent/30"
               >
                 <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent group-hover:bg-accent group-hover:text-background transition-all duration-500">
-                  <lab.icon size={24} weight="duotone" />
+                  <project.icon size={24} weight="duotone" />
                 </div>
                 
-                <h4 className="text-xl font-bold text-foreground">{lab.title}</h4>
-                <p className="mb-4 text-xs font-medium text-accent/80">{lab.subtitle}</p>
+                <h4 className="text-xl font-bold text-foreground">{project.title}</h4>
+                <p className="mb-4 text-xs font-medium text-accent/80">{project.subtitle}</p>
                 
                 <div className="mb-6 flex flex-wrap gap-2">
-                  {lab.stack.map(tech => (
+                  {project.stack.map(tech => (
                     <span key={tech} className="rounded-md bg-white/5 px-2 py-1 font-mono text-[9px] text-zinc-500 border border-white/5">
                       {tech}
                     </span>
@@ -140,7 +142,7 @@ export function Training() {
                 </div>
 
                 <ul className="space-y-3">
-                  {lab.achievements.map((item, idx) => (
+                  {project.achievements.map((item, idx) => (
                     <li key={idx} className="flex items-start gap-3 text-[11px] leading-relaxed text-zinc-400">
                       <div className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-accent/50" />
                       {item}
@@ -151,6 +153,7 @@ export function Training() {
             ))}
           </div>
         </div>
+
 
         {/* Mentorship Card */}
         <div className="mt-12 overflow-hidden rounded-3xl border border-accent/20 bg-gradient-to-br from-slate-900 to-slate-950 p-8 md:p-12 relative">

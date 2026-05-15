@@ -2,10 +2,14 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ArrowUpRight } from "@phosphor-icons/react";
+import { ArrowUpRight, List, X } from "@phosphor-icons/react";
+import { motion, AnimatePresence } from "framer-motion";
+
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -14,13 +18,27 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
+
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-40 transition-[background-color,backdrop-filter,border-color] duration-300 ${scrolled
+      className={`fixed inset-x-0 top-0 z-[200] transition-[background-color,backdrop-filter,border-color] duration-300 ${scrolled
         ? "border-b border-white/10 bg-black/80 backdrop-blur-2xl"
         : "border-b border-transparent bg-transparent"
         }`}
     >
+
+
       <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-4 md:px-12 md:py-4">
         <Link
           href="/"
@@ -38,7 +56,7 @@ export function Navbar() {
           />
         </Link>
 
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-3 lg:gap-8">
           <nav className="hidden items-center gap-8 lg:flex">
             {["Engineering", "Works", "Training", "Team"].map((item) => (
               <a
@@ -58,8 +76,94 @@ export function Navbar() {
             Contact Us
             <ArrowUpRight size={14} weight="bold" />
           </a>
+
+          {/* Mobile Menu Toggle */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="relative z-[300] flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/10 text-foreground lg:hidden"
+            aria-label="Toggle Menu"
+          >
+
+
+            <AnimatePresence mode="wait">
+              {isOpen ? (
+                <motion.div
+                  key="close"
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                >
+                  <X size={20} weight="bold" />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="open"
+                  initial={{ rotate: 90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: -90, opacity: 0 }}
+                >
+                  <List size={20} weight="bold" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </button>
         </div>
       </div>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="fixed inset-0 z-[250] flex flex-col bg-[#020617] lg:hidden"
+            style={{ isolation: 'isolate' }}
+          >
+
+
+
+            <div className="flex flex-col items-center justify-center flex-grow gap-6 px-6 pt-20">
+              {["Engineering", "Works", "Training", "Team"].map((item, i) => (
+                <motion.a
+                  key={item}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  href={`#${item.toLowerCase()}`}
+                  onClick={() => setIsOpen(false)}
+                  className="font-sans text-3xl font-black uppercase tracking-tighter text-foreground active:text-accent"
+                >
+                  {item}<span className="text-accent">.</span>
+                </motion.a>
+              ))}
+              
+              <motion.a
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                href="#contact"
+                onClick={() => setIsOpen(false)}
+                className="mt-6 flex items-center gap-3 rounded-full bg-accent px-8 py-3.5 font-sans text-xs font-black uppercase tracking-[0.2em] text-black"
+              >
+                Start a Project
+                <ArrowUpRight size={16} weight="bold" />
+              </motion.a>
+            </div>
+
+            
+            <div className="p-12 border-t border-white/5 flex justify-between items-center">
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">PixelCult &copy; 2026</p>
+              <div className="flex gap-4">
+                <div className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
+                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent">Systems Nominal</span>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </header>
   );
 }
