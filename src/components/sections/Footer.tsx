@@ -17,7 +17,7 @@ export function Footer() {
 
         <div className="mb-20 flex flex-wrap justify-center gap-6">
           <a
-            href="mailto:rahulrr1453@gmail.com"
+            href="mailto:info.pixelcult@gmail.com"
             className="group interactive inline-flex items-center gap-3 rounded-xl border border-accent/20 bg-accent/5 px-8 py-5 font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-accent transition-all duration-300 hover:bg-accent/10 hover:border-accent/40 hover:text-white"
           >
             <EnvelopeSimple size={24} />

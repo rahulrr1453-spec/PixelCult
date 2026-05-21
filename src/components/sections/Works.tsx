@@ -1,6 +1,6 @@
 "use client";
 
-import { Buildings, Volleyball, Heartbeat, ArrowSquareOut } from "@phosphor-icons/react";
+import { Buildings, Volleyball, Heartbeat, ArrowSquareOut, PaintBrush } from "@phosphor-icons/react";
 import { TiltCard } from "@/components/ui/TiltCard";
 
 const PROJECTS = [
@@ -19,6 +19,14 @@ const PROJECTS = [
     icon: Volleyball,
     link: "https://bangalore-throwball-premier-league.netlify.app/",
     color: "text-brand-accent",
+  },
+  {
+    title: "TYzEN Edits",
+    category: "Video & Graphic Design",
+    description: "A highly dynamic, cinematic portfolio showcase built for a professional video editing and graphic design YouTube channel.",
+    icon: PaintBrush,
+    link: "https://tyzenedits.netlify.app",
+    color: "text-violet-400",
   },
   {
     title: "Padmini Homeo Clinic",
@@ -44,7 +52,7 @@ export function Works() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           {PROJECTS.map((project, i) => (
             <TiltCard key={i} delay={i * 0.1} className="p-8">
               <div className="flex h-full flex-col pointer-events-none" style={{ transform: "translateZ(25px)" }}>

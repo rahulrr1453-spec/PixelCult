@@ -43,6 +43,10 @@ export function Navbar() {
         <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-4 md:px-12 md:py-4">
           <Link
             href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
             className="group flex items-center gap-4 transition-transform hover:scale-[1.01]"
           >
             <img
