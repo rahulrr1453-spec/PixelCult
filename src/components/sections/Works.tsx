@@ -1,17 +1,9 @@
 "use client";
 
-import { Buildings, Volleyball, Heartbeat, ArrowSquareOut, PaintBrush } from "@phosphor-icons/react";
+import { Volleyball, Heartbeat, ArrowSquareOut, PaintBrush } from "@phosphor-icons/react";
 import { TiltCard } from "@/components/ui/TiltCard";
 
 const PROJECTS = [
-  {
-    title: "Abstream Tech",
-    category: "Corporate Static Site",
-    description: "A sleek, modern, and highly optimized static company website developed to establish a strong enterprise digital presence.",
-    icon: Buildings,
-    link: "https://abstreamtech.com",
-    color: "text-accent",
-  },
   {
     title: "YSC Throwball Club",
     category: "Full-Stack Webapp",

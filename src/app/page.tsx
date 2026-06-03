@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Navbar } from "@/components/ui/Navbar";
 import { Hero } from "@/components/sections/Hero";
 import { Engineering } from "@/components/sections/Engineering";
@@ -9,12 +9,17 @@ import { Training } from "@/components/sections/Training";
 import { Team } from "@/components/sections/Team";
 import { Footer } from "@/components/sections/Footer";
 import { DigitalCore } from "@/components/ui/DigitalCore";
+import { VideoIntro } from "@/components/ui/VideoIntro";
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [introComplete, setIntroComplete] = useState(false);
 
   return (
     <>
+      {/* Full-screen video intro plays on every page load */}
+      <VideoIntro onComplete={() => setIntroComplete(true)} />
+
       <Navbar />
       
       {/* Global 3D Background - Now handles its own scroll tracking internally */}
@@ -22,7 +27,7 @@ export default function Home() {
 
       <main ref={containerRef} className="relative z-10">
         {/* Hero now handles its own local scroll tracking internally */}
-        <Hero />
+        <Hero introComplete={introComplete} />
         
         <div id="engineering" className="relative bg-transparent">
            <Engineering />

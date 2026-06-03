@@ -7,7 +7,7 @@ import { ArrowRight, ChatCircleText } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import { DIALOGUES, HERO_TEXT_FADE_END } from "@/lib/hero";
 
-export function Hero() {
+export function Hero({ introComplete = false }: { introComplete?: boolean }) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const heroTextRef = useRef<HTMLDivElement | null>(null);
   const bigLeftTextRef = useRef<HTMLDivElement | null>(null);
@@ -22,12 +22,20 @@ export function Hero() {
   const tickingRef = useRef(false);
   const [loaded, setLoaded] = useState(false);
 
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Start a 1500ms boot timer; introComplete watcher can cancel it early
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoaded(true);
-    }, 1500);
-    return () => clearTimeout(timer);
+    timerRef.current = setTimeout(() => setLoaded(true), 1500);
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
   }, []);
+
+  // If VideoIntro finishes before the 1500ms, reveal immediately
+  useEffect(() => {
+    if (!introComplete) return;
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setLoaded(true);
+  }, [introComplete]);
 
   useEffect(() => {
     const handleScroll = () => {
