@@ -7,7 +7,7 @@ import { ArrowRight, ChatCircleText } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import { DIALOGUES, HERO_TEXT_FADE_END } from "@/lib/hero";
 
-export function Hero({ introComplete = false }: { introComplete?: boolean }) {
+export function Hero() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const heroTextRef = useRef<HTMLDivElement | null>(null);
   const bigLeftTextRef = useRef<HTMLDivElement | null>(null);
@@ -20,22 +20,6 @@ export function Hero({ introComplete = false }: { introComplete?: boolean }) {
   const dialoguesContainerRef = useRef<HTMLDivElement>(null);
 
   const tickingRef = useRef(false);
-  const [loaded, setLoaded] = useState(false);
-
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // Start a 1500ms boot timer; introComplete watcher can cancel it early
-  useEffect(() => {
-    timerRef.current = setTimeout(() => setLoaded(true), 1500);
-    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-  }, []);
-
-  // If VideoIntro finishes before the 1500ms, reveal immediately
-  useEffect(() => {
-    if (!introComplete) return;
-    if (timerRef.current) clearTimeout(timerRef.current);
-    setLoaded(true);
-  }, [introComplete]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -287,22 +271,7 @@ export function Hero({ introComplete = false }: { introComplete?: boolean }) {
         </div>
 
 
-        {!loaded && (
-          <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-5 bg-background px-6">
-            <EyebrowBadge>PIXELCULT // BOOTING CORE</EyebrowBadge>
-            <div className="h-px w-60 bg-white/10 md:w-80">
-              <motion.div
-                className="h-full bg-accent"
-                initial={{ width: 0 }}
-                animate={{ width: "100%" }}
-                transition={{ duration: 1.5, ease: "easeInOut" }}
-              />
-            </div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-zinc-500">
-              Initializing Engine ...
-            </p>
-          </div>
-        )}
+
       </div>
     </section>
   );

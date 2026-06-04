@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Outfit, Fira_Code } from "next/font/google";
 import "./globals.css";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
+import { DigitalCore } from "@/components/ui/DigitalCore";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -27,7 +28,6 @@ export const metadata: Metadata = {
   },
 };
 
-import { CustomCursor } from "@/components/ui/CustomCursor";
 
 export default function RootLayout({
   children,
@@ -41,7 +41,7 @@ export default function RootLayout({
         className="relative min-h-full bg-background text-foreground grain"
         suppressHydrationWarning
       >
-        <CustomCursor />
+        <DigitalCore />
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>
     </html>

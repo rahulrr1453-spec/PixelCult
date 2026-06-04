@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { ArrowUpRight, List, X } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -9,7 +10,12 @@ import { motion, AnimatePresence } from "framer-motion";
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+  const isHome = pathname === "/";
 
+  // Build an href that works whether we're on home (anchor) or another page (/#section)
+  const sectionHref = (section: string) =>
+    isHome ? `#${section}` : `/#${section}`;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -29,6 +35,13 @@ export function Navbar() {
     };
   }, [isOpen]);
 
+  const handleLogoClick = (e: React.MouseEvent) => {
+    if (isHome) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    // On other pages: let the Link navigate normally to "/"
+  };
 
   return (
     <>
@@ -38,15 +51,11 @@ export function Navbar() {
           : "border-b border-transparent bg-transparent"
           }`}
       >
-
-
         <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-4 md:px-12 md:py-4">
+          {/* Logo — scrolls to top on home, navigates to / on other pages */}
           <Link
             href="/"
-            onClick={(e) => {
-              e.preventDefault();
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
+            onClick={handleLogoClick}
             className="group flex items-center gap-4 transition-transform hover:scale-[1.01]"
           >
             <img
@@ -63,19 +72,27 @@ export function Navbar() {
 
           <div className="flex items-center gap-3 lg:gap-8">
             <nav className="hidden items-center gap-8 lg:flex">
-              {["Engineering", "Works", "Training", "Team"].map((item) => (
+              {["Engineering", "Training", "Team"].map((item) => (
                 <a
                   key={item}
-                  href={`#${item.toLowerCase()}`}
+                  href={sectionHref(item.toLowerCase())}
                   className="font-sans text-[11px] font-black uppercase tracking-[0.2em] text-zinc-300 transition-all hover:text-accent hover:tracking-[0.25em]"
                 >
                   {item}
                 </a>
               ))}
+              <Link
+                href="/work"
+                className={`font-sans text-[11px] font-black uppercase tracking-[0.2em] transition-all hover:text-accent hover:tracking-[0.25em] ${
+                  pathname === "/work" ? "text-accent" : "text-zinc-300"
+                }`}
+              >
+                Our Work
+              </Link>
             </nav>
 
             <a
-              href="#contact"
+              href={sectionHref("contact")}
               className="group hidden items-center gap-2 rounded-full border border-accent/20 bg-accent/5 px-5 py-2.5 font-sans text-[10px] font-black uppercase tracking-[0.2em] text-accent backdrop-blur-md transition-all duration-300 hover:bg-accent hover:text-black sm:inline-flex"
             >
               Contact Us
@@ -88,8 +105,6 @@ export function Navbar() {
               className="relative z-[300] flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/10 text-foreground lg:hidden"
               aria-label="Toggle Menu"
             >
-
-
               <AnimatePresence mode="wait">
                 {isOpen ? (
                   <motion.div
@@ -116,7 +131,7 @@ export function Navbar() {
         </div>
       </header>
 
-      {/* Mobile Menu Overlay - Moved outside header to avoid stacking/clipping issues */}
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -125,9 +140,8 @@ export function Navbar() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             className="fixed inset-0 z-[300] flex flex-col bg-[#020617] lg:hidden"
-            style={{ isolation: 'isolate' }}
+            style={{ isolation: "isolate" }}
           >
-            {/* Close button inside overlay */}
             <motion.button
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -140,25 +154,40 @@ export function Navbar() {
             </motion.button>
 
             <div className="flex flex-col items-center justify-center flex-grow gap-6 px-6 pt-20">
-              {["Engineering", "Works", "Training", "Team"].map((item, i) => (
+              {["Engineering", "Training", "Team"].map((item, i) => (
                 <motion.a
                   key={item}
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.05 }}
-                  href={`#${item.toLowerCase()}`}
+                  href={sectionHref(item.toLowerCase())}
                   onClick={() => setIsOpen(false)}
                   className="font-sans text-3xl font-black uppercase tracking-tighter text-foreground active:text-accent"
                 >
                   {item}<span className="text-accent">.</span>
                 </motion.a>
               ))}
-              
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+              >
+                <Link
+                  href="/work"
+                  onClick={() => setIsOpen(false)}
+                  className={`font-sans text-3xl font-black uppercase tracking-tighter ${
+                    pathname === "/work" ? "text-accent" : "text-foreground"
+                  } active:text-accent`}
+                >
+                  Our Work<span className="text-accent">.</span>
+                </Link>
+              </motion.div>
+
               <motion.a
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                href="#contact"
+                transition={{ delay: 0.2 }}
+                href={sectionHref("contact")}
                 onClick={() => setIsOpen(false)}
                 className="mt-6 flex items-center gap-3 rounded-full bg-accent px-8 py-3.5 font-sans text-xs font-black uppercase tracking-[0.2em] text-black"
               >

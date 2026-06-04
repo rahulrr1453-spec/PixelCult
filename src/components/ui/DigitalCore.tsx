@@ -2,8 +2,10 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { usePathname } from "next/navigation";
 
 export function DigitalCore() {
+  const pathname = usePathname();
   const containerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
@@ -15,6 +17,14 @@ export function DigitalCore() {
   const gyroRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
   const originalZRef = useRef<Float32Array | null>(null);
 
+  useEffect(() => {
+    const handleScrollReset = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      scrollRef.current = totalHeight <= 0 ? 0 : window.scrollY / totalHeight;
+    };
+    const timer = setTimeout(handleScrollReset, 50);
+    return () => clearTimeout(timer);
+  }, [pathname]);
 
   useEffect(() => {
     if (!containerRef.current) return;
