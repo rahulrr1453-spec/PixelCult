@@ -11,6 +11,7 @@ export function Footer() {
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,6 +19,7 @@ export function Footer() {
     
     setIsSubmitting(true);
     setSubmitStatus(null);
+    setErrorMessage(null);
 
     const payload = {
       Name: name,
@@ -44,6 +46,9 @@ export function Footer() {
         setMessage("");
         setIsSubmitting(false);
         return;
+      }
+      if (!apiResponse.ok && apiData && apiData.error) {
+        console.warn("API route failed with error:", apiData.error);
       }
     } catch (apiError) {
       console.warn("API route failed, falling back to FormSubmit:", apiError);
@@ -74,9 +79,11 @@ export function Footer() {
         setMessage("");
       } else {
         setSubmitStatus("error");
+        setErrorMessage(data?.message || "Submission was not processed successfully by FormSubmit.");
       }
-    } catch (error) {
+    } catch (error: any) {
       setSubmitStatus("error");
+      setErrorMessage(error?.message || "A network error occurred while sending.");
     } finally {
       setIsSubmitting(false);
     }
@@ -235,7 +242,9 @@ export function Footer() {
                 <Warning size={20} className="shrink-0 mt-0.5" />
                 <div>
                   <span className="block font-mono font-bold uppercase tracking-wider">[ SYSTEM WARNING: TRANSMISSION FAILED ]</span>
-                  <p className="mt-1 text-zinc-300">An error occurred while sending. Please try again or email us directly at <a href="mailto:info.pixelcult@gmail.com" className="text-accent underline font-semibold">info.pixelcult@gmail.com</a>.</p>
+                  <p className="mt-1 text-zinc-300">
+                    An error occurred while sending{errorMessage ? `: ${errorMessage}` : ""}. Please try again or email us directly at <a href="mailto:info.pixelcult@gmail.com" className="text-accent underline font-semibold">info.pixelcult@gmail.com</a>.
+                  </p>
                 </div>
               </motion.div>
             )}

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import path from "path";
+import fs from "fs";
 
 export async function POST(request: Request) {
   try {
@@ -13,6 +14,10 @@ export async function POST(request: Request) {
       // SMTP credentials not configured - notify frontend to fallback to FormSubmit
       return NextResponse.json({ useFallback: true });
     }
+
+    const logoPath = path.join(process.cwd(), "public", "bglogo.png");
+    const logoExists = fs.existsSync(logoPath);
+    const logoSrc = logoExists ? "cid:pixelcultlogo" : "https://pixelcult.com/bglogo.png";
 
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || "smtp.gmail.com",
@@ -99,7 +104,7 @@ export async function POST(request: Request) {
   <div class="card">
     <div class="header">
       <div style="margin-bottom: 15px;">
-        <img class="logo" src="cid:pixelcultlogo" alt="PixelCult Icon" style="height: 45px; vertical-align: middle;">
+        <img class="logo" src="${logoSrc}" alt="PixelCult Icon" style="height: 45px; vertical-align: middle;">
       </div>
       <div style="font-family: 'Courier New', Courier, monospace; font-size: 22px; font-weight: 900; color: #ffffff; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px;">
         PIXEL<span style="color: #10b981;">CULT</span>
@@ -139,19 +144,22 @@ export async function POST(request: Request) {
 </html>
     `;
 
+    const attachments = [];
+    if (logoExists) {
+      attachments.push({
+        filename: "bglogo.png",
+        path: logoPath,
+        cid: "pixelcultlogo",
+      });
+    }
+
     await transporter.sendMail({
       from: `"PixelCult Portal" <${smtpUser}>`,
       to: "info.pixelcult@gmail.com",
       replyTo: Email,
       subject: `[PixelCult Portal] New Lead: ${Name} (${Organization})`,
       html: htmlContent,
-      attachments: [
-        {
-          filename: "bglogo.png",
-          path: path.join(process.cwd(), "public", "bglogo.png"),
-          cid: "pixelcultlogo",
-        },
-      ],
+      attachments,
     });
 
     return NextResponse.json({ success: true });
