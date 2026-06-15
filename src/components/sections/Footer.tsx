@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowUpRight, EnvelopeSimple, WhatsappLogo, MapPin, CircleNotch, CheckCircle, Warning } from "@phosphor-icons/react";
+import { ArrowUpRight, EnvelopeSimple, WhatsappLogo, MapPin, CircleNotch, CheckCircle, Warning, InstagramLogo, XLogo } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function Footer() {
@@ -83,9 +83,9 @@ export function Footer() {
   };
 
   return (
-    <footer id="contact" className="relative z-10 border-t border-white/5 py-16 md:py-20 px-6 md:px-12 overflow-hidden">
+    <footer id="contact" className="relative z-10 border-t border-white/10 py-16 md:py-20 px-6 md:px-12 overflow-hidden">
       {/* Faded Background Layer */}
-      <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-sm -z-10" />
+      <div className="absolute inset-0 bg-slate-950/90 backdrop-blur-sm -z-10" />
       
       <div className="mx-auto max-w-[1400px] text-center">
         <h2 className="mb-4 font-sans text-[clamp(2.5rem,7vw,5rem)] font-black leading-none tracking-tighter text-foreground">
@@ -243,19 +243,37 @@ export function Footer() {
         </div>
 
         {/* Footer Sub-Links */}
-        <div className="flex flex-col items-center justify-between gap-8 border-t border-white/5 pt-12 md:flex-row">
+        <div className="flex flex-col items-center justify-between gap-8 border-t border-white/10 pt-12 md:flex-row">
           <div className="flex items-center gap-4">
             <img src="/bglogo.png" alt="PixelCult" className="h-8 w-8 object-contain" />
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">
+            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-400">
               © 2026 PixelCult. All Rights Reserved.
             </p>
           </div>
           
-          <div className="flex items-center gap-6 font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-400">
-            <span className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-6 font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-300">
+            <span className="flex items-center gap-2 text-zinc-400">
               <MapPin size={14} className="text-accent" />
               Operating Globally
             </span>
+            <a
+              href="https://www.instagram.com/pixelcult_in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-zinc-400 hover:text-accent transition-all duration-300 hover:scale-110 flex items-center justify-center p-1"
+              aria-label="Instagram"
+            >
+              <InstagramLogo size={18} />
+            </a>
+            <a
+              href="https://x.com/PixelCult_in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-zinc-400 hover:text-accent transition-all duration-300 hover:scale-110 flex items-center justify-center p-1"
+              aria-label="X (Twitter)"
+            >
+              <XLogo size={18} />
+            </a>
             <a href="#" className="hover:text-accent transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-accent transition-colors">Terms of Service</a>
           </div>
