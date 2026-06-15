@@ -72,7 +72,7 @@ export function Navbar() {
 
           <div className="flex items-center gap-3 lg:gap-8">
             <nav className="hidden items-center gap-8 lg:flex">
-              {["Engineering", "Training", "Team"].map((item) => (
+              {["Engineering"].map((item) => (
                 <a
                   key={item}
                   href={sectionHref(item.toLowerCase())}
@@ -81,6 +81,14 @@ export function Navbar() {
                   {item}
                 </a>
               ))}
+              <Link
+                href="/services"
+                className={`font-sans text-[11px] font-black uppercase tracking-[0.2em] transition-all hover:text-accent hover:tracking-[0.25em] ${
+                  pathname === "/services" ? "text-accent" : "text-zinc-300"
+                }`}
+              >
+                Our Services
+              </Link>
               <Link
                 href="/work"
                 className={`font-sans text-[11px] font-black uppercase tracking-[0.2em] transition-all hover:text-accent hover:tracking-[0.25em] ${
@@ -154,7 +162,7 @@ export function Navbar() {
             </motion.button>
 
             <div className="flex flex-col items-center justify-center flex-grow gap-6 px-6 pt-20">
-              {["Engineering", "Training", "Team"].map((item, i) => (
+              {["Engineering"].map((item, i) => (
                 <motion.a
                   key={item}
                   initial={{ opacity: 0, y: 15 }}
@@ -167,6 +175,21 @@ export function Navbar() {
                   {item}<span className="text-accent">.</span>
                 </motion.a>
               ))}
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+              >
+                <Link
+                  href="/services"
+                  onClick={() => setIsOpen(false)}
+                  className={`font-sans text-3xl font-black uppercase tracking-tighter ${
+                    pathname === "/services" ? "text-accent" : "text-foreground"
+                  } active:text-accent`}
+                >
+                  Our Services<span className="text-accent">.</span>
+                </Link>
+              </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}

@@ -24,7 +24,7 @@ export default function Home() {
         </div>
 
         <div id="works" className="relative bg-transparent">
-          <Works />
+          <Works showViewMore={true} />
         </div>
 
         <div id="training" className="relative bg-transparent">

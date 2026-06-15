@@ -1,8 +1,8 @@
 "use client";
 
 import { GraduationCap, Code, HardDrives, Graph, Student, CheckCircle, ArrowRight, ShieldCheck, TerminalWindow, Bug } from "@phosphor-icons/react";
-
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const COURSES = [
   {
@@ -111,6 +111,16 @@ export function Training() {
           ))}
         </div>
 
+        <div className="mt-12 flex justify-center">
+          <Link
+            href="/services#training-certification"
+            className="group inline-flex items-center gap-2 rounded-xl border border-accent/20 bg-accent/5 px-8 py-4 font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-accent backdrop-blur-md transition-all duration-300 hover:bg-accent hover:text-black"
+          >
+            View More Courses
+            <ArrowRight size={16} weight="bold" className="transition-transform group-hover:translate-x-1" />
+          </Link>
+        </div>
+
         {/* Projects Section */}
         <div className="mt-24 mb-16">
           <div className="mb-12">
@@ -181,13 +191,22 @@ export function Training() {
               ))}
             </div>
 
-            <a
-              href="#contact"
-              className="group inline-flex w-fit items-center gap-2 rounded-xl bg-accent px-8 py-4 font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-background transition-all duration-300 hover:shadow-[0_0_30px_rgba(16,185,129,0.3)]"
-            >
-              Get Project Help
-              <ArrowRight size={16} weight="bold" className="transition-transform group-hover:translate-x-1" />
-            </a>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <a
+                href="#contact"
+                className="group inline-flex w-fit items-center justify-center gap-2 rounded-xl bg-accent px-8 py-4 font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-background transition-all duration-300 hover:shadow-[0_0_30px_rgba(16,185,129,0.3)]"
+              >
+                Get Project Help
+                <ArrowRight size={16} weight="bold" className="transition-transform group-hover:translate-x-1" />
+              </a>
+              <Link
+                href="/services#college-internships"
+                className="group inline-flex w-fit items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-8 py-4 font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-300 transition-all duration-300 hover:bg-white/10 hover:text-white"
+              >
+                View Internship Details
+                <ArrowRight size={16} weight="bold" className="transition-transform group-hover:translate-x-1" />
+              </Link>
+            </div>
           </div>
           
           {/* Decorative Background Element */}

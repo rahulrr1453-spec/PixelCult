@@ -1,7 +1,8 @@
 "use client";
 
-import { Volleyball, Heartbeat, ArrowSquareOut, PaintBrush } from "@phosphor-icons/react";
+import { Volleyball, Heartbeat, ArrowSquareOut, PaintBrush, ArrowRight } from "@phosphor-icons/react";
 import { TiltCard } from "@/components/ui/TiltCard";
+import Link from "next/link";
 
 const PROJECTS = [
   {
@@ -31,7 +32,11 @@ const PROJECTS = [
   },
 ];
 
-export function Works() {
+interface WorksProps {
+  showViewMore?: boolean;
+}
+
+export function Works({ showViewMore = false }: WorksProps) {
   return (
     <section id="works" className="relative z-10 py-24 px-6 md:px-12 bg-slate-900/20 border-y border-white/5">
       <div className="mx-auto max-w-[1400px]">
@@ -84,6 +89,18 @@ export function Works() {
             </TiltCard>
           ))}
         </div>
+
+        {showViewMore && (
+          <div className="mt-12 flex justify-center">
+            <Link
+              href="/work"
+              className="group inline-flex items-center gap-2 rounded-xl border border-accent/20 bg-accent/5 px-8 py-4 font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-accent backdrop-blur-md transition-all duration-300 hover:bg-accent hover:text-black pointer-events-auto"
+            >
+              View All Work
+              <ArrowRight size={16} weight="bold" className="transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

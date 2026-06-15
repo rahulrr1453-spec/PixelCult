@@ -1,7 +1,8 @@
 "use client";
 
-import { Desktop, DeviceMobile, Brain, Wrench } from "@phosphor-icons/react";
+import { Desktop, DeviceMobile, Brain, Wrench, ArrowRight } from "@phosphor-icons/react";
 import { TiltCard } from "@/components/ui/TiltCard";
+import Link from "next/link";
 
 const CAPABILITIES = [
   {
@@ -70,6 +71,16 @@ export function Engineering() {
               </div>
             </TiltCard>
           ))}
+        </div>
+
+        <div className="mt-12 flex justify-center">
+          <Link
+            href="/services#engineering-capabilities"
+            className="group inline-flex items-center gap-2 rounded-xl border border-accent/20 bg-accent/5 px-8 py-4 font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-accent backdrop-blur-md transition-all duration-300 hover:bg-accent hover:text-black"
+          >
+            View More
+            <ArrowRight size={16} weight="bold" className="transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
       </div>
     </section>
