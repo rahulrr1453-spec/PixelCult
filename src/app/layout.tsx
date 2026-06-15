@@ -26,6 +26,9 @@ export const metadata: Metadata = {
     shortcut: "/bglogo.png",
     apple: "/bglogo.png",
   },
+  verification: {
+    google: "YbFEAU-9qLLGzmD8zLPSHJXhMep6haMsQznSWvTJb1c",
+  },
 };
 
 
