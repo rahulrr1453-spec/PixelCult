@@ -5,7 +5,8 @@
 [build.environment]
   NODE_VERSION = "20"
   NPM_FLAGS = "--legacy-peer-deps"
-  SECRETS_SCAN_OMIT_KEYS = "SMTP_USER"
+  SECRETS_SCAN_OMIT_KEYS = "SMTP_USER,SMTP_HOST,SMTP_PORT"
+  SECRETS_SCAN_OMIT_PATHS = ".netlify/.next/cache, .next/cache"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"

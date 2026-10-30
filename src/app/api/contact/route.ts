@@ -17,8 +17,8 @@ export async function POST(request: Request) {
       const logoSrc = logoExists ? "cid:pixelcultlogo" : "https://pixelcult.net/bglogo.png";
 
       const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST || "smtp.gmail.com",
-        port: parseInt(process.env.SMTP_PORT || "465"),
+        host: "smtp.gmail.com",
+        port: 465,
         secure: true,
         auth: {
           user: smtpUser,
