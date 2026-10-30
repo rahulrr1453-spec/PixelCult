@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 :root {
+  --font-outfit: "Outfit", system-ui, sans-serif;
+  --font-fira-code: "Fira Code", monospace;
   --background: #020617;
   --foreground: #f1f5f9;
   --muted: #64748b;
