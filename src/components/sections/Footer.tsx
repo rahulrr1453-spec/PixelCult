@@ -28,8 +28,8 @@ export function Footer() {
       Message: message
     };
 
+    // ── Nodemailer Transmission via /api/contact ──
     try {
-      // Step 1: Try custom API route (uses SMTP Nodemailer if credentials exist)
       const apiResponse = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -38,7 +38,7 @@ export function Footer() {
 
       const apiData = await apiResponse.json();
 
-      if (apiResponse.ok && !apiData.useFallback) {
+      if (apiResponse.ok && apiData.success) {
         setSubmitStatus("success");
         setName("");
         setOrgName("");
@@ -47,56 +47,30 @@ export function Footer() {
         setIsSubmitting(false);
         return;
       }
-      if (!apiResponse.ok && apiData && apiData.error) {
-        console.warn("API route failed with error:", apiData.error);
-      }
-    } catch (apiError) {
-      console.warn("API route failed, falling back to FormSubmit:", apiError);
-    }
 
-    // Step 2: Fallback to FormSubmit (styled with color customizer)
-    try {
-      const response = await fetch("https://formsubmit.co/ajax/info.pixelcult@gmail.com", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify({
-          ...payload,
-          _subject: `PixelCult Contact Form: Submission from ${name}`,
-          _template: "table",
-          _color: "#10b981"
-        })
-      });
-
-      const data = await response.json();
-      if (response.ok && data.success === "true") {
-        setSubmitStatus("success");
-        setName("");
-        setOrgName("");
-        setEmail("");
-        setMessage("");
-      } else {
+      if (apiData && apiData.error) {
         setSubmitStatus("error");
-        setErrorMessage(data?.message || "Submission was not processed successfully by FormSubmit.");
+        setErrorMessage(apiData.error);
+        setIsSubmitting(false);
+        return;
       }
-    } catch (error: any) {
-      setSubmitStatus("error");
-      setErrorMessage(error?.message || "A network error occurred while sending.");
-    } finally {
-      setIsSubmitting(false);
+    } catch (apiError: unknown) {
+      console.warn("Nodemailer API route failed:", apiError);
     }
+
+    setSubmitStatus("error");
+    setErrorMessage("Unable to deliver message automatically. Please dispatch your message directly via your mail client using the button below.");
+    setIsSubmitting(false);
   };
 
   return (
-    <footer id="contact" className="relative z-10 border-t border-white/10 py-16 md:py-20 px-6 md:px-12 overflow-hidden">
+    <footer id="contact" className="relative z-10 border-t border-white/10 py-16 md:py-20 px-4 sm:px-6 md:px-12 overflow-hidden w-full">
       {/* Faded Background Layer */}
       <div className="absolute inset-0 bg-slate-950/90 backdrop-blur-sm -z-10" />
       
       <div className="mx-auto max-w-[1400px] text-center">
         <h2 className="mb-4 font-sans text-[clamp(2.5rem,7vw,5rem)] font-black leading-none tracking-tighter text-foreground">
-          Let's Build <span className="text-accent">It.</span>
+          Let&apos;s Build <span className="text-accent">It.</span>
         </h2>
         
         <p className="mx-auto mb-10 max-w-2xl text-lg md:text-xl text-zinc-400">
@@ -128,7 +102,7 @@ export function Footer() {
           {/* Inner ambient glow */}
           <div className="absolute -right-24 -top-24 h-48 w-48 bg-accent/5 rounded-full blur-[80px] pointer-events-none" />
           
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form id="contact-form" onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Name Field */}
               <div className="space-y-2">
@@ -173,7 +147,7 @@ export function Footer() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="e.g. aarav@pixelcult.com"
+                placeholder="e.g. aarav@pixelcult.net"
                 className="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-2.5 font-sans text-sm text-foreground focus:border-accent/50 focus:outline-none transition-colors"
               />
             </div>
@@ -237,15 +211,28 @@ export function Footer() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="mt-6 p-4 rounded-xl border border-red-500/20 bg-red-500/5 flex items-start gap-3 text-xs md:text-sm text-red-400"
+                className="mt-6 p-4 rounded-xl border border-red-500/20 bg-red-500/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs md:text-sm text-red-400"
               >
-                <Warning size={20} className="shrink-0 mt-0.5" />
-                <div>
-                  <span className="block font-mono font-bold uppercase tracking-wider">[ SYSTEM WARNING: TRANSMISSION FAILED ]</span>
-                  <p className="mt-1 text-zinc-300">
-                    An error occurred while sending{errorMessage ? `: ${errorMessage}` : ""}. Please try again or email us directly at <a href="mailto:info.pixelcult@gmail.com" className="text-accent underline font-semibold">info.pixelcult@gmail.com</a>.
-                  </p>
+                <div className="flex items-start gap-3">
+                  <Warning size={20} className="shrink-0 mt-0.5" />
+                  <div>
+                    <span className="block font-mono font-bold uppercase tracking-wider">[ SYSTEM WARNING: TRANSMISSION FAILED ]</span>
+                    <p className="mt-1 text-zinc-300">
+                      {errorMessage || "An error occurred while sending."} You can also email us directly at{" "}
+                      <a href="mailto:info.pixelcult@gmail.com" className="text-accent underline font-semibold">
+                        info.pixelcult@gmail.com
+                      </a>.
+                    </p>
+                  </div>
                 </div>
+
+                <a
+                  href={`mailto:info.pixelcult@gmail.com?subject=${encodeURIComponent(`[PixelCult Lead] ${name || "Inquiry"}`)}&body=${encodeURIComponent(`Name: ${name}\nOrganization: ${orgName || "Not Specified"}\nEmail: ${email}\n\nMessage:\n${message}`)}`}
+                  className="shrink-0 inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider text-black transition-all hover:shadow-[0_0_20px_rgba(16,185,129,0.4)] w-full sm:w-auto justify-center"
+                >
+                  Dispatch via Mail App
+                  <ArrowUpRight size={14} weight="bold" />
+                </a>
               </motion.div>
             )}
           </AnimatePresence>

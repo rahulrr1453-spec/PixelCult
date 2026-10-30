@@ -7,8 +7,26 @@ import { ArrowSquareOut, X, ArrowLeft, ArrowRight, GlobeSimple } from "@phosphor
 /* ── Project data ─────────────────────────────────────────────── */
 const PROJECTS = [
   {
-    id: "tyedits",
+    id: "apex",
     index: "001",
+    title: "Apex Sports Academy",
+    category: "Sports Academy Platform",
+    description:
+      "A high-performance digital sports platform built for Bangalore's premier volleyball academy. Features automated tournament registrations, online coaching program enrollments, court and venue booking management, and integrated digital player agreements.",
+    link: "https://apex-sports-academy.onrender.com",
+    local: false,
+    screenshots: [
+      "/projects/apex1.png",
+      "/projects/apex2.png",
+      "/projects/apex3.png",
+      "/projects/apex4.png",
+      "/projects/apex5.png",
+      "/projects/apex6.png",
+    ],
+  },
+  {
+    id: "tyedits",
+    index: "002",
     title: "TYzEN Edits",
     category: "Video & Graphic Design",
     description:
@@ -25,7 +43,7 @@ const PROJECTS = [
   },
   {
     id: "phc",
-    index: "002",
+    index: "003",
     title: "Padmini Homeo Clinic",
     category: "Healthcare UI/UX",
     description:
@@ -42,7 +60,7 @@ const PROJECTS = [
   },
   {
     id: "ysc",
-    index: "003",
+    index: "004",
     title: "YSC Throwball Club",
     category: "Full-Stack Webapp",
     description:
@@ -92,18 +110,18 @@ function Lightbox({
       </button>
       <button
         onClick={(e) => { e.stopPropagation(); setIdx((i) => (i - 1 + total) % total); }}
-        className="absolute left-4 md:left-8 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-300 transition hover:border-accent/50 hover:text-accent"
+        className="absolute left-2 md:left-8 z-10 flex h-9 w-9 md:h-12 md:w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-300 transition hover:border-accent/50 hover:text-accent"
       >
-        <ArrowLeft size={20} />
+        <ArrowLeft size={18} />
       </button>
       <button
         onClick={(e) => { e.stopPropagation(); setIdx((i) => (i + 1) % total); }}
-        className="absolute right-4 md:right-8 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-300 transition hover:border-accent/50 hover:text-accent"
+        className="absolute right-2 md:right-8 z-10 flex h-9 w-9 md:h-12 md:w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-300 transition hover:border-accent/50 hover:text-accent"
       >
-        <ArrowRight size={20} />
+        <ArrowRight size={18} />
       </button>
 
-      <div className="w-full max-w-5xl px-20" onClick={(e) => e.stopPropagation()}>
+      <div className="w-full max-w-5xl px-12 md:px-20" onClick={(e) => e.stopPropagation()}>
         <AnimatePresence mode="wait">
           <motion.img
             key={idx}
@@ -184,7 +202,7 @@ function ProjectEntry({ project, index }: { project: Project; index: number }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.75, ease: [0.23, 1, 0.32, 1] }}
-        className="relative py-20 md:py-28"
+        className="relative py-16 md:py-28 overflow-hidden w-full"
       >
         {/* Top divider */}
         <div
@@ -196,7 +214,7 @@ function ProjectEntry({ project, index }: { project: Project; index: number }) {
         />
 
         {/* Watermark index */}
-        <div className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 select-none font-sans text-[8rem] font-black leading-none tracking-tighter text-white opacity-[0.025] md:text-[14rem]">
+        <div className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 select-none font-sans text-[5rem] sm:text-[8rem] md:text-[14rem] font-black leading-none tracking-tighter text-white opacity-[0.025]">
           {project.index}
         </div>
 
@@ -321,7 +339,7 @@ function ProjectEntry({ project, index }: { project: Project; index: number }) {
                   }}
                 >
                   {/* Fixed-height thumb — object-contain so full thumb is visible */}
-                  <div className="flex h-16 w-full items-center justify-center p-1">
+                  <div className="flex h-10 sm:h-12 md:h-16 w-full items-center justify-center p-1">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={src}
@@ -344,20 +362,20 @@ function ProjectEntry({ project, index }: { project: Project; index: number }) {
             }`}
           >
             {/* Eyebrow */}
-            <div className="mb-5 flex items-center gap-3">
-              <div className="h-px w-8 bg-accent/50" />
-              <span className="font-mono text-[9px] uppercase tracking-[0.45em] text-accent">
-                {project.category} // {project.index}
+            <div className="mb-4 sm:mb-5 flex items-center gap-2.5 sm:gap-3 flex-wrap">
+              <div className="h-px w-6 sm:w-8 bg-accent/50 shrink-0" />
+              <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.2em] sm:tracking-[0.45em] text-accent break-words">
+                {project.category} {"//"} {project.index}
               </span>
             </div>
 
             {/* Title */}
-            <h3 className="mb-5 font-sans text-4xl font-black leading-[0.9] tracking-tighter text-foreground md:text-5xl lg:text-6xl">
+            <h3 className="mb-4 sm:mb-5 font-sans text-3xl sm:text-5xl lg:text-6xl font-black leading-[0.9] tracking-tighter text-foreground break-words">
               {project.title}
             </h3>
 
             {/* Description */}
-            <p className="mb-8 text-sm leading-relaxed text-zinc-400 md:text-[15px]">
+            <p className="mb-6 sm:mb-8 text-sm leading-relaxed text-zinc-400 md:text-[15px]">
               {project.description}
             </p>
 
@@ -365,15 +383,15 @@ function ProjectEntry({ project, index }: { project: Project; index: number }) {
             <div className="mb-6 flex items-center gap-2.5">
               {project.local ? (
                 <>
-                  <span className="h-1.5 w-1.5 rounded-full bg-zinc-600" />
-                  <span className="font-mono text-[9px] uppercase tracking-[0.42em] text-zinc-500">
+                  <span className="h-1.5 w-1.5 rounded-full bg-zinc-600 shrink-0" />
+                  <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.2em] sm:tracking-[0.42em] text-zinc-500">
                     Status — Locally Hosted
                   </span>
                 </>
               ) : (
                 <>
-                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
-                  <span className="font-mono text-[9px] uppercase tracking-[0.42em] text-accent">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent shadow-[0_0_6px_rgba(16,185,129,0.8)] shrink-0" />
+                  <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.2em] sm:tracking-[0.42em] text-accent">
                     Status — Live
                   </span>
                 </>
@@ -386,7 +404,7 @@ function ProjectEntry({ project, index }: { project: Project; index: number }) {
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex w-fit items-center gap-2.5 rounded-full border border-accent/30 bg-accent/8 px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.35em] text-accent transition-all duration-200 hover:border-accent hover:bg-accent hover:text-black"
+                className="group inline-flex w-fit items-center gap-2.5 rounded-full border border-accent/30 bg-accent/8 px-4 sm:px-5 py-2 sm:py-2.5 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.35em] text-accent transition-all duration-200 hover:border-accent hover:bg-accent hover:text-black"
               >
                 <GlobeSimple size={13} weight="bold" />
                 View Deployment
@@ -407,11 +425,11 @@ function ProjectEntry({ project, index }: { project: Project; index: number }) {
 /* ── Section export ───────────────────────────────────────────── */
 export function ProjectArchive() {
   return (
-    <section id="archive" className="relative z-10 px-6 md:px-12">
+    <section id="archive" className="relative z-10 px-4 sm:px-6 md:px-12 overflow-hidden w-full">
       <div className="mx-auto max-w-[1400px]">
         {/* Section header */}
         <motion.div
-          className="pb-4 pt-20"
+          className="pb-4 pt-16 sm:pt-20"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -419,18 +437,18 @@ export function ProjectArchive() {
         >
           <div className="mb-5">
             <div
-              className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.4em] text-accent"
+              className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.2em] sm:tracking-[0.4em] text-accent max-w-full flex-wrap"
               style={{
                 border: "1px solid rgba(16,185,129,0.3)",
                 background: "rgba(16,185,129,0.06)",
               }}
             >
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
-              Archive // Classified Builds
+              Archive {"//"} Classified Builds
             </div>
           </div>
 
-          <h2 className="font-sans text-5xl font-black leading-[0.9] tracking-tighter text-foreground md:text-7xl">
+          <h2 className="font-sans text-4xl sm:text-6xl md:text-7xl font-black leading-[0.9] tracking-tighter text-foreground">
             Project <span className="text-accent">Archive.</span>
           </h2>
           <p className="mt-4 max-w-xl text-sm leading-relaxed text-zinc-400 md:text-base">

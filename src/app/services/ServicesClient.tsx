@@ -6,7 +6,6 @@ import { Footer } from "@/components/sections/Footer";
 import { motion } from "framer-motion";
 import { TiltCard } from "@/components/ui/TiltCard";
 import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
-import { HudFrame } from "@/components/ui/HudFrame";
 import {
   Desktop,
   DeviceMobile,
@@ -17,7 +16,6 @@ import {
   Graph,
   ShieldCheck,
   TerminalWindow,
-  GraduationCap,
   Certificate,
   Student,
   ArrowUpRight,
@@ -91,9 +89,9 @@ export function ServicesClient() {
         }}
       />
 
-      <main className="relative z-10">
+      <main className="relative z-10 w-full overflow-x-hidden">
         {/* ── Page Hero ── */}
-        <section className="relative flex min-h-[50vh] flex-col items-start justify-end px-6 pb-16 pt-36 md:px-12 md:pb-20 md:pt-44">
+        <section className="relative flex min-h-[50vh] flex-col items-start justify-end px-4 sm:px-6 md:px-12 pb-16 pt-32 sm:pt-36 md:pb-20 md:pt-44 overflow-hidden">
           {/* Scanline grid texture */}
           <div
             className="pointer-events-none absolute inset-0"
@@ -106,18 +104,18 @@ export function ServicesClient() {
 
           {/* Large ambient glow */}
           <div
-            className="pointer-events-none absolute left-0 top-1/3 h-[500px] w-[500px] -translate-y-1/2 rounded-full blur-[120px]"
+            className="pointer-events-none absolute left-0 top-1/3 h-[300px] w-[300px] sm:h-[500px] sm:w-[500px] -translate-y-1/2 rounded-full blur-[100px] sm:blur-[120px]"
             style={{ background: "rgba(16,185,129,0.06)" }}
           />
 
           {/* HUD corner brackets */}
-          <div className="pointer-events-none absolute left-6 top-28 text-accent/30 md:left-12 md:top-36">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <div className="pointer-events-none absolute left-4 sm:left-6 top-24 sm:top-28 text-accent/30 md:left-12 md:top-36">
+            <svg width="20" height="20" className="sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none">
               <path d="M0 14V0H14" stroke="currentColor" strokeWidth="1.2" />
             </svg>
           </div>
-          <div className="pointer-events-none absolute right-6 top-28 text-accent/30 md:right-12 md:top-36">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <div className="pointer-events-none absolute right-4 sm:right-6 top-24 sm:top-28 text-accent/30 md:right-12 md:top-36">
+            <svg width="20" height="20" className="sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none">
               <path d="M24 14V0H10" stroke="currentColor" strokeWidth="1.2" />
             </svg>
           </div>
@@ -133,7 +131,7 @@ export function ServicesClient() {
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, delay: 0.07 }}
-              className="font-sans text-[clamp(3.5rem,11vw,8rem)] font-black leading-[0.87] tracking-tighter text-foreground"
+              className="font-sans text-[clamp(2.5rem,10vw,6.5rem)] font-black leading-[0.87] tracking-tighter text-foreground"
             >
               Our{" "}
               <span
@@ -169,27 +167,27 @@ export function ServicesClient() {
         </section>
 
         {/* ── SECTION 1: WEB & MOBILE DEVELOPMENT ── */}
-        <section id="engineering-capabilities" className="relative z-10 py-24 px-6 md:px-12 border-b border-white/5">
+        <section id="engineering-capabilities" className="relative z-10 py-16 sm:py-24 px-4 sm:px-6 md:px-12 border-b border-white/5 overflow-hidden w-full">
           <div className="mx-auto max-w-[1400px]">
-            <div className="mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+            <div className="mb-12 sm:mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
               <div>
                 <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent mb-3">Capabilities // 01</p>
-                <h2 className="font-sans text-4xl font-black text-foreground md:text-5xl">
+                <h2 className="font-sans text-3xl sm:text-5xl font-black text-foreground">
                   Web & App <span className="text-accent">Designs.</span>
                 </h2>
                 <p className="mt-4 max-w-2xl text-base text-zinc-400 md:text-lg">
                   Custom engineered frontends, scalable application logic, and premium performance metrics optimized for maximum visual impact and robust stability.
                 </p>
               </div>
-              <div className="flex items-center gap-2 font-mono text-xs text-zinc-400 uppercase tracking-widest bg-white/5 border border-white/10 px-5 py-2.5 rounded">
+              <div className="flex items-center gap-2 font-mono text-xs text-zinc-400 uppercase tracking-widest bg-white/5 border border-white/10 px-4 sm:px-5 py-2.5 rounded self-start md:self-end">
                 <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
                 SYSTEM LATENCY: MINIMAL
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 w-full">
               {/* Static Websites */}
-              <TiltCard className="p-8 md:p-10">
+              <TiltCard className="p-6 sm:p-8 md:p-10">
                 <div className="pointer-events-none" style={{ transform: "translateZ(30px)" }}>
                   <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-white/5 border border-white/10 text-accent">
                     <Desktop size={32} weight="duotone" />
@@ -252,22 +250,22 @@ export function ServicesClient() {
         </section>
 
         {/* ── SECTION 2: TECHNICAL TRAINING & CERTIFICATION ── */}
-        <section id="training-certification" className="relative z-10 py-24 px-6 md:px-12 bg-slate-900/20 border-b border-white/5">
+        <section id="training-certification" className="relative z-10 py-16 sm:py-24 px-4 sm:px-6 md:px-12 bg-slate-900/20 border-b border-white/5 overflow-hidden w-full">
           <div className="mx-auto max-w-[1400px]">
-            <div className="mb-16 text-center">
-              <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent mb-3">Education // 02</p>
-              <h2 className="font-sans text-4xl font-black text-foreground md:text-5xl">
+            <div className="mb-12 sm:mb-16 text-center">
+              <p className="font-mono text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-accent mb-3">NextSkill Powered by PixelCult // Education</p>
+              <h2 className="font-sans text-3xl sm:text-5xl font-black text-foreground">
                 Technical Training <span className="text-accent">& Courses.</span>
               </h2>
-              <p className="mt-4 mx-auto max-w-3xl text-base text-zinc-300 md:text-lg">
-                Rigorous programs tailored to equip you with real-world deployment skills. Train with production architects on current tech stacks and receive an official verified digital credential.
+              <p className="mt-4 mx-auto max-w-3xl text-sm sm:text-base text-zinc-300 md:text-lg">
+                <span className="font-semibold text-white">NextSkill</span>, powered by PixelCult. Rigorous programs tailored to equip you with real-world deployment skills. Train with production architects on current tech stacks and receive an official verified digital credential.
               </p>
             </div>
 
             {/* Redesigned grid with 7 courses and 1 featured certification highlight card */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 w-full">
               {COURSES.map((course, i) => (
-                <TiltCard key={i} className="p-8">
+                <TiltCard key={i} className="p-6 sm:p-8">
                   <div className="pointer-events-none" style={{ transform: "translateZ(30px)" }}>
                     <div className={`mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-white/5 border border-white/10 ${course.color}`}>
                       <course.icon size={32} weight="duotone" />
@@ -286,8 +284,8 @@ export function ServicesClient() {
                 </TiltCard>
               ))}
 
-              {/* Grid Balancer: Featured PixelCult Academy Certification spotlight */}
-              <TiltCard className="p-8 border border-accent/20 bg-gradient-to-br from-slate-950 to-emerald-950/20 md:col-span-2 lg:col-span-2">
+              {/* Grid Balancer: Featured NextSkill Certification spotlight */}
+              <TiltCard className="p-6 sm:p-8 border border-accent/20 bg-gradient-to-br from-slate-950 to-emerald-950/20 md:col-span-2 lg:col-span-2">
                 <div className="pointer-events-none h-full flex flex-col justify-between" style={{ transform: "translateZ(30px)" }}>
                   <div>
                     <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-accent/15 border border-accent/30 text-accent">
@@ -295,15 +293,16 @@ export function ServicesClient() {
                     </div>
                     
                     <div className="mb-2 font-mono text-xs uppercase tracking-[0.2em] text-accent">Credential Standard</div>
-                    <h3 className="mb-4 text-2xl font-black text-foreground">PixelCult Academy Digital Certification</h3>
+                    <h3 className="mb-2 text-2xl font-black text-foreground">NextSkill Digital Certification</h3>
+                    <p className="mb-4 font-mono text-xs uppercase tracking-widest text-brand-accent">Powered by PixelCult</p>
                     <p className="mb-8 text-sm leading-relaxed text-zinc-300 md:text-base">
-                      Upon successful completion of any course track, final review lab modules, and practical assignments, **every student will be getting an official digital certificate directly from the company end (PixelCult).** This cryptographically verifiable credential validates your hands-on code capability to potential employers.
+                      Upon successful completion of any course track, final review lab modules, and practical assignments, every student receives an official verified digital certificate from <span className="font-semibold text-white">NextSkill, powered by PixelCult</span>. This cryptographically verifiable credential validates your hands-on code capability to potential employers.
                     </p>
                   </div>
                   
-                  <div className="flex flex-wrap gap-3">
-                    {["Official PixelCult Seal", "Direct Recruiter Verification", "Project Verified"].map((feat) => (
-                      <span key={feat} className="rounded-full bg-accent/10 border border-accent/30 px-3.5 py-1.5 font-mono text-xs text-accent">
+                  <div className="flex flex-wrap gap-2.5 sm:gap-3">
+                    {["NextSkill Powered by PixelCult", "Official Verified Seal", "Direct Recruiter Verification", "Project Verified"].map((feat) => (
+                      <span key={feat} className="rounded-full bg-accent/10 border border-accent/30 px-3 py-1.5 font-mono text-[10px] sm:text-xs text-accent">
                         ✓ {feat}
                       </span>
                     ))}
@@ -315,7 +314,7 @@ export function ServicesClient() {
         </section>
 
         {/* ── SECTION 3: COLLEGE PROJECTS & INTERNSHIP ── */}
-        <section id="college-internships" className="relative z-10 py-24 px-6 md:px-12 border-b border-white/5">
+        <section id="college-internships" className="relative z-10 py-16 sm:py-24 px-4 sm:px-6 md:px-12 border-b border-white/5 overflow-hidden w-full">
           <div className="mx-auto max-w-[1400px]">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
               {/* College Projects Overview */}
@@ -358,7 +357,7 @@ export function ServicesClient() {
 
               {/* The Dual Certificates Grid */}
               <div className="lg:col-span-6 space-y-6">
-                <div className="border border-white/10 rounded-2xl bg-[#020617]/60 p-6 md:p-8 relative overflow-hidden">
+                <div className="border border-white/10 rounded-2xl bg-[#020617]/60 p-4 sm:p-6 md:p-8 relative overflow-hidden">
                   <div className="absolute top-0 right-0 h-48 w-48 bg-accent/5 rounded-full blur-[80px] pointer-events-none" />
                   
                   <h3 className="font-mono text-xs uppercase tracking-widest text-zinc-300 mb-6 flex items-center gap-2">
@@ -368,7 +367,7 @@ export function ServicesClient() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Project Completion Certificate Card */}
-                    <div className="border border-white/5 rounded-xl bg-slate-950 p-6 space-y-4">
+                    <div className="border border-white/5 rounded-xl bg-slate-950 p-4 sm:p-6 space-y-4">
                       <div className="flex h-9 w-9 items-center justify-center rounded-full bg-accent/10 text-accent font-mono text-sm font-bold">
                         01
                       </div>
@@ -384,7 +383,7 @@ export function ServicesClient() {
                     </div>
 
                     {/* Internship Certificate Card */}
-                    <div className="border border-white/5 rounded-xl bg-slate-950 p-6 space-y-4">
+                    <div className="border border-white/5 rounded-xl bg-slate-950 p-4 sm:p-6 space-y-4">
                       <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-accent/10 text-brand-accent font-mono text-sm font-bold">
                         02
                       </div>
@@ -401,12 +400,12 @@ export function ServicesClient() {
                   </div>
 
                   <div className="mt-6 border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest">
+                    <div className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest text-center sm:text-left">
                       ★ PIXELCULT COLLABORATIVE ENVIRONMENT
                     </div>
                     <Link
                       href="/#contact"
-                      className="group inline-flex items-center gap-2.5 rounded-lg bg-accent px-5 py-3 font-mono text-xs font-bold uppercase tracking-[0.15em] text-background transition-all hover:shadow-[0_0_25px_rgba(16,185,129,0.3)] shrink-0"
+                      className="group inline-flex items-center justify-center gap-2.5 rounded-lg bg-accent px-5 py-3 font-mono text-xs font-bold uppercase tracking-[0.15em] text-background transition-all hover:shadow-[0_0_25px_rgba(16,185,129,0.3)] shrink-0 w-full sm:w-auto"
                     >
                       Inquire Program
                       <ArrowUpRight size={14} weight="bold" />

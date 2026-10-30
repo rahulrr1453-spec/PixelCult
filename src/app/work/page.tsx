@@ -2,6 +2,7 @@
 
 import { Navbar } from "@/components/ui/Navbar";
 import { Works } from "@/components/sections/Works";
+import { UpcomingProject } from "@/components/sections/UpcomingProject";
 import { ProjectArchive } from "@/components/sections/ProjectArchive";
 import { Footer } from "@/components/sections/Footer";
 import { motion } from "framer-motion";
@@ -20,9 +21,9 @@ export default function WorkPage() {
         }}
       />
 
-      <main className="relative z-10">
+      <main className="relative z-10 w-full overflow-x-hidden">
         {/* ── Page Hero ── */}
-        <section className="relative flex min-h-[55vh] flex-col items-start justify-end px-6 pb-16 pt-36 md:px-12 md:pb-20 md:pt-44">
+        <section className="relative flex min-h-[50vh] sm:min-h-[55vh] flex-col items-start justify-end px-4 sm:px-6 md:px-12 pb-16 pt-32 sm:pt-36 md:pb-20 md:pt-44 overflow-hidden">
           {/* Scanline grid texture */}
           <div
             className="pointer-events-none absolute inset-0"
@@ -35,18 +36,18 @@ export default function WorkPage() {
 
           {/* Large ambient glow */}
           <div
-            className="pointer-events-none absolute left-0 top-1/3 h-[500px] w-[500px] -translate-y-1/2 rounded-full blur-[120px]"
+            className="pointer-events-none absolute left-0 top-1/3 h-[300px] w-[300px] sm:h-[500px] sm:w-[500px] -translate-y-1/2 rounded-full blur-[100px] sm:blur-[120px]"
             style={{ background: "rgba(16,185,129,0.06)" }}
           />
 
           {/* HUD corner brackets */}
-          <div className="pointer-events-none absolute left-6 top-28 text-accent/30 md:left-12 md:top-36">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <div className="pointer-events-none absolute left-4 sm:left-6 top-24 sm:top-28 text-accent/30 md:left-12 md:top-36">
+            <svg width="20" height="20" className="sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none">
               <path d="M0 14V0H14" stroke="currentColor" strokeWidth="1.2" />
             </svg>
           </div>
-          <div className="pointer-events-none absolute right-6 top-28 text-accent/30 md:right-12 md:top-36">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <div className="pointer-events-none absolute right-4 sm:right-6 top-24 sm:top-28 text-accent/30 md:right-12 md:top-36">
+            <svg width="20" height="20" className="sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none">
               <path d="M24 14V0H10" stroke="currentColor" strokeWidth="1.2" />
             </svg>
           </div>
@@ -60,7 +61,7 @@ export default function WorkPage() {
               className="mb-6 flex items-center gap-3"
             >
               <div
-                className="flex items-center gap-2 rounded-full px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.45em] text-accent"
+                className="flex items-center gap-2 rounded-full px-3 py-1.5 font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.2em] sm:tracking-[0.4em] text-accent max-w-full flex-wrap"
                 style={{ border: "1px solid rgba(16,185,129,0.3)", background: "rgba(16,185,129,0.06)" }}
               >
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent shadow-[0_0_8px_rgba(16,185,129,0.9)]" />
@@ -73,7 +74,7 @@ export default function WorkPage() {
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, delay: 0.07 }}
-              className="font-sans text-[clamp(3.5rem,11vw,8rem)] font-black leading-[0.87] tracking-tighter text-foreground"
+              className="font-sans text-[clamp(2.5rem,10vw,6.5rem)] font-black leading-[0.87] tracking-tighter text-foreground"
             >
               Our{" "}
               <span
@@ -109,7 +110,7 @@ export default function WorkPage() {
         </section>
 
         {/* Section: Featured Deployments */}
-        <div className="relative">
+        <div className="relative overflow-hidden w-full">
           {/* Subtle section background so cards float over the particles */}
           <div
             className="pointer-events-none absolute inset-0"
@@ -120,8 +121,19 @@ export default function WorkPage() {
           </div>
         </div>
 
+        {/* Section: Upcoming Flagship Project (CampusIQ) */}
+        <div className="relative overflow-hidden w-full">
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{ background: "rgba(2,6,23,0.2)" }}
+          />
+          <div className="relative z-10">
+            <UpcomingProject />
+          </div>
+        </div>
+
         {/* Section: Project Archive */}
-        <div className="relative">
+        <div className="relative overflow-hidden w-full">
           <div
             className="pointer-events-none absolute inset-0"
             style={{ background: "rgba(2,6,23,0.25)" }}

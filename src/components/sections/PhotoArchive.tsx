@@ -7,6 +7,23 @@ import { ArrowSquareOut, ArrowDown } from "@phosphor-icons/react";
 /* ── Data ─────────────────────────────────────────────────────── */
 const PROJECTS = [
   {
+    id: "apex",
+    title: "Apex Sports Academy",
+    category: "Sports Academy Platform",
+    description:
+      "A high-performance digital sports platform built for Bangalore's premier volleyball academy, featuring tournament registrations, coaching programs, and venue booking.",
+    link: "https://apex-sports-academy.onrender.com",
+    local: false,
+    screenshots: [
+      "/projects/apex1.png",
+      "/projects/apex2.png",
+      "/projects/apex3.png",
+      "/projects/apex4.png",
+      "/projects/apex5.png",
+      "/projects/apex6.png",
+    ],
+  },
+  {
     id: "tyedits",
     title: "TYzEN Edits",
     category: "Video & Graphic Design",

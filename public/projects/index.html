@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Martha - Virtual Assistant</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"> <!-- Font Awesome CDN -->
+    <style>
+        
+        body {
+            background-image: url('bgg.png'); /* Replace with the path to your image */
+            background-size: cover; /* Ensures the image covers the whole page */
+            background-position: center center; /* Centers the image */
+            background-attachment: fixed; /* Keeps the background fixed during scrolling */
+            background-color: black; /* Fallback color if the image doesn't load */
+            color: white; /* Text color */
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            opacity: 0; /* Initially set the body to be transparent */
+            animation: fadeIn 2s forwards; /* Fade-in effect for the body */
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        #webcam {
+        width: 50%; /* Set the width to 50% */
+        height: auto; /* Maintain the aspect ratio */
+        margin-top: 30px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        border-radius: 20px; /* Rounded corners */
+        box-shadow: 0 0 15px 5px rgba(57, 129, 129, 0.5); /* Neon blue shadow */
+        transition: all 0.3s ease; /* Smooth transition */
+    }
+
+    /* This class will be added when the webcam is hidden */
+    #webcam.hidden {
+        display: none; /* Hide the webcam */
+        border: none; /* Remove the border */
+        box-shadow: none; /* Remove the shadow */
+    }
+
+
+
+        #avatar-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 150px;
+            height: 150px;
+            opacity: 0; /* Initial opacity */
+            animation: slideInAvatar 1s forwards 1s; /* Slide in from the left */
+        }
+
+        @keyframes slideInAvatar {
+            0% { 
+                left: -200px; 
+                opacity: 0; 
+            }
+            100% { 
+                left: 10px; 
+                opacity: 1; 
+            }
+        }
+
+        #avatar {
+            width: 100%; /* Ensure it fills the container without resizing */
+            height: 100%; /* Ensure it fills the container without resizing */
+            object-fit: contain; /* Keep the aspect ratio of the image intact */
+        }
+
+        #header {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #222;
+            border-radius: 10px;
+            width: 70%;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 0 15px 5px rgba(57, 129, 129, 0.5);
+            opacity: 0;
+            animation: slideInHeader 2s forwards 1.5s;
+            transition: all 0.3s ease-in-out;
+        }
+
+        #header:hover {
+            transform: scale(1.02);
+            cursor: default;
+            box-shadow: 0 0 25px 8px rgba(0, 255, 255, 0.7);
+        }
+
+
+        @keyframes slideInHeader {
+            0% { transform: translateY(-100px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        #interaction {
+            margin-top: 40px;
+            opacity: 0; /* Initial opacity */
+            animation: fadeInButtons 2s forwards 2s; /* Fade in buttons */
+        }
+
+        @keyframes fadeInButtons {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        #interaction button {
+            padding: 15px;
+            font-size: 18px;
+            background-color: #398181; /* Neon Blue in HEX */
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 0 0 10px 2px rgba(0, 255, 255, 0.5); /* Slight neon effect */
+            margin-bottom: 30px;
+            transition: all 0.3s ease-in-out; /* Smooth transition for hover effect */
+            display: auto;
+            align-items: center; /* Align items (icon and text) horizontally */
+            justify-content: center; /* Center content */
+            place-items: center;
+        }
+
+        #interaction button i {
+            margin-right: 10px; /* Space between icon and text */
+        }
+
+        #interaction button:hover {
+            background-color: #0099cc; /* Darker blue on hover */
+            transform: scale(1.1); /* Slight scale-up effect */
+            box-shadow: 0 0 20px 4px rgba(0, 255, 255, 0.8); /* Increased shadow effect on hover */
+        }
+
+        #image-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #uploaded-image {
+            max-width: 80%;
+            height: auto;
+            margin-top: 20px;
+        }
+       #conversation {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #222;
+    border-radius: 10px;
+    width: 70%;
+    max-height: 300px; /* Set max height */
+    overflow-y: auto;   /* Scroll when full */
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 0 15px 5px rgba(57, 129, 129, 0.5);
+    transition: all 0.3s ease-in-out;
+    scroll-behavior: smooth;
+}
+
+#conversation:hover {
+    transform: scale(1.01);
+    cursor: default;
+    box-shadow: 0 0 25px 8px rgba(0, 255, 255, 0.7);
+}
+
+#conversation p {
+    margin: 8px 0;
+    font-size: 16px;
+    line-height: 1.4;
+    text-align: left;
+}
+#conversation::-webkit-scrollbar {
+    width: 10px;
+}
+#conversation::-webkit-scrollbar-track {
+    background: #111;
+    border-radius: 10px;
+}
+#conversation::-webkit-scrollbar-thumb {
+    background: #00ffff;
+    border-radius: 10px;
+}
+
+        #command-input {
+            display: none;
+            width: 60%;
+            font-size: 18px;
+            margin-top: 20px;
+            border-radius: 10px;
+            background-color: #222;
+            color: white;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 15px;
+            box-shadow: 0 0 15px 5px rgba(57, 129, 129, 0.5);
+            transition: all 0.3s ease-in-out;
+        }
+
+        #command-input:hover {
+            box-shadow: 0 0 25px 8px rgba(0, 255, 255, 0.7);
+            transform: scale(1.02);
+        }
+
+
+        #command-input:focus {
+            outline: none;
+            box-shadow: 0 0 25px 10px rgba(0, 255, 255, 0.8);
+            transform: scale(1.02);
+        }
+
+        #clock:hover {
+            box-shadow: 0 0 25px 8px rgba(0, 255, 255, 0.7);
+            cursor: default;
+            transform: scale(1.05);
+            transition: all 0.3s ease-in-out;
+        }
+        #clear-history-btn {
+    display: none;
+    padding: 10px 16px;
+    font-size: 14px;
+    background-color: #398181;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 0 8px 1.5px rgba(0, 255, 255, 0.5);
+    margin-top: 15px;
+    transition: all 0.3s ease-in-out;
+}
+#clear-history-btn:hover {
+    background-color: #0099cc;
+    transform: scale(1.05);
+    box-shadow: 0 0 16px 3px rgba(0, 255, 255, 0.8);
+}
+
+#calendar-clock-popup {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background-color: #111;
+    color: #00ffff;
+    border: 2px solid #00ffff;
+    border-radius: 12px;
+    padding: 20px;
+    z-index: 1001;
+    box-shadow: 0 0 15px rgba(0,255,255,0.5);
+    font-family: 'Arial', sans-serif;
+    width: 280px;
+}
+
+#popup-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#popup-clock {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #00ffff;
+}
+
+#calendar-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 5px;
+}
+
+#calendar-controls button,
+#calendar-controls select {
+    background-color: #222;
+    color: #00ffff;
+    border: 1px solid #00ffff;
+    border-radius: 5px;
+    padding: 4px 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#calendar-controls button:hover,
+#calendar-controls select:hover {
+    background-color: #00ffff;
+    color: #000;
+}
+
+#popup-calendar table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#popup-calendar th, #popup-calendar td {
+    border: 1px solid #00ffff;
+    padding: 6px;
+    text-align: center;
+    font-size: 14px;
+}
+
+#popup-calendar th {
+    background-color: #222;
+    color: #00ffff;
+}
+
+#popup-calendar td.today {
+    background-color: #00ffff;
+    color: #000;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+
+    </style>
+</head>
+<body>
+    <footer style="
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 20px 0;
+        text-align: center;
+        box-shadow: 0 -2px 10px rgba(0, 255, 255, 0.2);
+        z-index: 999;
+    ">
+    <button onclick="location.href='about2.html'" style="
+        padding: 12px 24px;
+        font-size: 16px;
+        background-color: #398181;
+        border: none;
+        color: white;
+        cursor: pointer;
+        border-radius: 8px;
+        box-shadow: 0 0 10px 2px rgba(0, 255, 255, 0.5);
+        margin: 0 15px;
+        transition: all 0.3s ease-in-out;
+    " onmouseover="this.style.backgroundColor='#0099cc'; this.style.transform='scale(1.1)'; this.style.boxShadow='0 0 20px 4px rgba(0,255,255,0.8)';"
+        onmouseout="this.style.backgroundColor='#398181'; this.style.transform='scale(1)'; this.style.boxShadow='0 0 10px 2px rgba(0,255,255,0.5)';">
+        About Us
+    </button>
+
+    <button onclick="location.href='features.html'" style="
+        padding: 12px 24px;
+        font-size: 16px;
+        background-color: #398181;
+        border: none;
+        color: white;
+        cursor: pointer;
+        border-radius: 8px;
+        box-shadow: 0 0 10px 2px rgba(0, 255, 255, 0.5);
+        margin: 0 15px;
+        transition: all 0.3s ease-in-out;
+    " onmouseover="this.style.backgroundColor='#0099cc'; this.style.transform='scale(1.1)'; this.style.boxShadow='0 0 20px 4px rgba(0,255,255,0.8)';"
+        onmouseout="this.style.backgroundColor='#398181'; this.style.transform='scale(1)'; this.style.boxShadow='0 0 10px 2px rgba(0,255,255,0.5)';">
+        Features
+    </button>
+    </footer>
+
+      
+    <div id="avatar-container">
+        <img id="avatar" src="1000099840.gif" alt="martha Avatar">
+    </div>
+    <div id="clock" style="
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        font-size: 16px;
+        color: #56dada;
+        font-family: Arial, sans-serif;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 10px 14px;
+        border-radius: 8px;
+        z-index: 1000;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        line-height: 1.4;
+        text-align: right;
+    ">
+    <div id="time"></div>
+    <div id="date" style="font-size: 14px; color: #cccccc; "></div>
+    </div>
+
+   <div id="calendar-clock-popup" style="display: none;">
+  <div id="popup-content">
+    <div id="popup-clock">--:--:--</div>
+    <div id="calendar-controls">
+      <button onclick="changeMonth(-1)">◀</button>
+      <select id="month-select"></select>
+      <select id="year-select"></select>
+      <button onclick="changeMonth(1)">▶</button>
+    </div>
+    <div id="popup-calendar"></div>
+  </div>
+</div>
+
+<button id="vision-btn" title="Activate Vision" style="
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    width: 140px; /* Same width as clock container */
+    height: 45px;
+    background-color: #398181;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    box-shadow: 0 0 10px 2px rgba(0, 255, 255, 0.5);
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+">
+    <i class="fas fa-camera"></i>
+    <span>Vision</span>
+</button>
+
+
+    <div id="header">
+        <h1>Martha - Your Virtual Agent</h1>
+    </div>
+
+    <div id="interaction">
+    <div id="interaction-buttons" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+        <button id="speak-btn">
+            <i class="fas fa-microphone"></i>Speak something
+        </button>
+        <button id="text-btn">
+            <i class="fas fa-keyboard"></i>Type a command
+        </button>
+    </div>
+    <input type="text" id="command-input" placeholder="Type your command..." />
+</div>
+
+
+    <div id="image-container">
+        <input type="file" id="image-upload" accept="image/*" style="display:none;">
+        <img id="uploaded-image" src=""/>
+    </div>
+
+   <div id="conversation" class="scrollable-conversation"></div>
+   <button id="clear-history-btn" onclick="document.getElementById('conversation').innerHTML = ''; this.style.display='none';">
+    <i class="fas fa-trash-alt" style="margin-right: 6px;"></i>Clear History
+</button>
+
+   
+
+<div style="height: 120px;"></div>
+    <!-- Add a hidden video element to show the webcam stream -->
+    <video id="webcam" width="640" height="480" style="display:none" autoplay></video>
+    <canvas id="webcam-canvas" width="640" height="480" style="display:none"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+    <script>
+        const synth = window.speechSynthesis;
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        const WIKIPEDIA_API_URL = 'https://en.wikipedia.org/api/rest_v1/page/summary/';
+    
+        let avatar = document.getElementById('avatar');
+        let userTextDiv = document.getElementById('user-text');
+        let marthaResponseDiv = document.getElementById('martha-response');
+        let imageUpload = document.getElementById('image-upload');
+        let uploadedImage = document.getElementById('uploaded-image');
+        let commandInput = document.getElementById('command-input');
+        let model;
+        let detectedObjects = [];
+        let isListening = false;
+        let isTextMode = false;
+        let isTypingMode = false;
+        let currentTriviaAnswer = null;
+        let waitingForTriviaAnswer = false;
+
+   
+        // Load the COCO-SSD model
+        cocoSsd.load().then((loadedModel) => {
+            model = loadedModel;
+            console.log("COCO-SSD model loaded");
+        });
+
+        function updateClockAndDate() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            const dateString = now.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+
+            document.getElementById('time').textContent = timeString;
+            document.getElementById('date').textContent = dateString;
+        }
+
+        setInterval(updateClockAndDate, 1000);
+        updateClockAndDate();
+
+
+        // Function to get Google UK English Male voice
+        function getGoogleUKEnglishMaleVoice() {
+            const voices = synth.getVoices();
+            // Loop through voices and return the UK English Male voice
+            for (let i = 0; i < voices.length; i++) {
+                if (voices[i].lang === "en-GB" && voices[i].name.includes("male")) {
+                    return voices[i];
+                }
+            }
+            return null;  // Return null if not found
+        }
+
+        let isSpeaking = false;
+
+        setInterval(() => {
+            if (speechSynthesis.speaking && !isSpeaking) {
+                // Speaking just started
+                isSpeaking = true;
+                document.getElementById('avatar').src = 'speak.gif';
+            } else if (!speechSynthesis.speaking && isSpeaking) {
+                // Speaking just ended
+                isSpeaking = false;
+                document.getElementById('avatar').src = '1000099840.gif';
+            }
+        }, 100);  // Check every 100ms
+
+    
+        function speak(text, callback) {
+            if (isTypingMode) return;
+    const apiKey = 'sk_924c3b94765c15caab6eee5a34b085e0dd4f76634e1d023c';  // 🔐 Replace this
+    const voiceId = '56AoDkrOh6qfVPDXZ7Pt';     // 🗣 Rachel's voice ID
+
+    fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+        method: 'POST',
+        headers: {
+            'Accept': 'audio/mpeg',
+            'Content-Type': 'application/json',
+            'xi-api-key': apiKey
+        },
+        body: JSON.stringify({
+            text: text,
+            model_id: 'eleven_monolingual_v1',
+            voice_settings: {
+                stability: 0.7,
+                similarity_boost: 0.75
+            }
+        })
+    })
+    .then(res => res.blob())
+    .then(blob => {
+        const audioUrl = URL.createObjectURL(blob);
+        const audio = new Audio(audioUrl);
+
+        // 🔄 Change avatar when audio starts playing
+        const avatar = document.getElementById('avatar');
+        avatar.src = 'speak.gif';
+
+        audio.play();
+        audio.onended = () => {
+            // ⏹ Revert avatar when audio ends
+            avatar.src = '1000099840.gif';
+            if (callback) callback();
+        };
+    })
+    .catch(err => {
+        console.error("Error using ElevenLabs:", err);
+        const avatar = document.getElementById('avatar');
+        avatar.src = '1000099840.gif';  // Ensure avatar reverts on error
+        if (callback) callback();
+    });
+}
+
+const conversation = document.getElementById('conversation');
+const clearBtn = document.getElementById('clear-history-btn');
+
+const checkScrollbar = () => {
+    if (conversation.scrollHeight > conversation.clientHeight) {
+        clearBtn.style.display = 'inline-block';
+    } else {
+        clearBtn.style.display = 'none';
+    }
+};
+
+const observer = new MutationObserver(checkScrollbar);
+observer.observe(conversation, { childList: true, subtree: true });
+
+// Run once initially in case there's preloaded content
+checkScrollbar();
+
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+
+document.getElementById('clock').addEventListener('click', () => {
+    const popup = document.getElementById('calendar-clock-popup');
+    popup.style.display = (popup.style.display === 'none') ? 'block' : 'none';
+    generateCalendar(currentMonth, currentYear);
+});
+
+function updatePopupClock() {
+    const now = new Date();
+    const time = now.toLocaleTimeString();
+    document.getElementById('popup-clock').textContent = time;
+}
+setInterval(updatePopupClock, 1000);
+updatePopupClock();
+
+function populateMonthYearSelectors() {
+    const monthSelect = document.getElementById('month-select');
+    const yearSelect = document.getElementById('year-select');
+
+    const months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    monthSelect.innerHTML = '';
+    months.forEach((month, i) => {
+        const option = document.createElement('option');
+        option.value = i;
+        option.text = month;
+        monthSelect.appendChild(option);
+    });
+
+    yearSelect.innerHTML = '';
+    for (let y = 1970; y <= 2100; y++) {
+        const option = document.createElement('option');
+        option.value = y;
+        option.text = y;
+        yearSelect.appendChild(option);
+    }
+
+    monthSelect.value = currentMonth;
+    yearSelect.value = currentYear;
+
+    monthSelect.onchange = () => {
+        currentMonth = parseInt(monthSelect.value);
+        generateCalendar(currentMonth, currentYear);
+    };
+
+    yearSelect.onchange = () => {
+        currentYear = parseInt(yearSelect.value);
+        generateCalendar(currentMonth, currentYear);
+    };
+}
+
+function generateCalendar(month, year) {
+    const today = new Date();
+    const isCurrentMonth = month === today.getMonth() && year === today.getFullYear();
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    let calendar = '<table>';
+    calendar += '<tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr><tr>';
+
+    for (let i = 0; i < firstDay; i++) {
+        calendar += '<td></td>';
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+        const isToday = isCurrentMonth && d === today.getDate();
+        calendar += `<td class="${isToday ? 'today' : ''}">${d}</td>`;
+        if ((firstDay + d) % 7 === 0) calendar += '</tr><tr>';
+    }
+
+    calendar += '</tr></table>';
+    document.getElementById('popup-calendar').innerHTML = calendar;
+}
+
+// Trigger population on load
+populateMonthYearSelectors();
+
+
+    
+        function stopWebcam() {
+            const webcam = document.getElementById('webcam');
+            const stream = webcam.srcObject;
+            if (stream) {
+                const tracks = stream.getTracks();
+                tracks.forEach(track => track.stop()); // Stop all media tracks
+                webcam.srcObject = null; // Reset the webcam stream
+            }
+            const response = "Webcam has been stopped, and vision has been deactivated.";
+            displayMarthaResponse(response);
+            speak(response);
+            
+            // Hide the webcam and remove the border by adding the 'hidden' class
+            webcam.classList.add('hidden');
+        }
+
+        function detectObjectsFromWebcam() {
+            const webcamCanvas = document.getElementById('webcam-canvas');
+            const webcam = document.getElementById('webcam');
+            const context = webcamCanvas.getContext('2d');
+            setInterval(() => {
+                context.drawImage(webcam, 0, 0, webcamCanvas.width, webcamCanvas.height);
+                model.detect(webcamCanvas).then((predictions) => {
+                    detectedObjects = predictions.map(p => p.class);
+                    if (detectedObjects.length > 0) {
+                        console.log("Detected objects: ", detectedObjects);
+                    }
+                });
+            }, 100);
+        }
+        function describeVision() {
+            if (detectedObjects.length > 0) {
+                const objectsList = detectedObjects.join(', ');
+                const response = `I can see the following: ${objectsList}.`;
+                displayMarthaResponse(response);
+                speak(response);
+            } else {
+                const response = "I'm not detecting any objects right now.";
+                displayMarthaResponse(response);
+                speak(response);
+            }
+        }
+
+    
+        function startWebcam() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then((stream) => {
+                    const webcam = document.getElementById('webcam');
+                    webcam.style.display = 'block';
+                    webcam.srcObject = stream;
+                    detectObjectsFromWebcam();
+                })
+                .catch((err) => {
+                    console.error("Error accessing webcam: ", err);
+                    const response = "Hmm, sorry, I couldn’t access the webcam.";
+                    displayMarthaResponse(response);
+                    speak(response);
+                });
+        }
+    
+        function displayUserText(text) {
+    const conversation = document.getElementById('conversation');
+    const userEntry = document.createElement('p');
+    userEntry.innerHTML = `<strong>You:</strong> ${text}`;
+    conversation.appendChild(userEntry);
+    conversation.scrollTop = conversation.scrollHeight;
+}
+
+function displayMarthaResponse(response) {
+    const conversation = document.getElementById('conversation');
+    const marthaEntry = document.createElement('p');
+    marthaEntry.innerHTML = `<strong>Martha:</strong> ${response}
+        <button onclick="speak('${response.replace(/'/g, "\\'")}')" title="Click to hear" style="
+            margin-left: 10px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #00ffff;">
+            <i class="fas fa-volume-up"></i>
+        </button>`;
+    conversation.appendChild(marthaEntry);
+    conversation.scrollTop = conversation.scrollHeight;
+}
+
+
+    
+        function startListening() {
+            console.log("Starting speech recognition...");
+            recognition.start();
+        }
+    
+        recognition.onstart = function() {
+            console.log("Speech recognition started...");
+            document.getElementById('avatar').src = 'listen.gif'; // 👈 Change avatar
+            displayMarthaResponse("Martha is listening...");
+        };
+
+        recognition.onend = function() {
+            console.log("Speech recognition ended.");
+            document.getElementById('avatar').src = '1000099840.gif';
+            isListening = false; // reset toggle
+        };
+
+
+    
+        recognition.onresult = function(event) {
+            const command = event.results[0][0].transcript.toLowerCase();
+            console.log("Recognized command:", command);
+            displayUserText(command);
+            processCommand(command);
+            recognition.start();  // Restart speech recognition for continuous listening
+        };
+    
+        recognition.onerror = function(event) {
+            console.error('Speech recognition error:', event.error);
+            alert("Speech recognition error: " + event.error);
+        };
+
+        function turnOffTextMode() {
+            const response = "Okay, turning off text mode now.. The input box will now disappear.";
+            displayMarthaResponse(response);
+            speak(response);
+            commandInput.style.display = "none";  // Hide the input box
+        }
+
+        
+        function getRandomResponse(mood) {
+            const responses = {
+                happy: [
+                    "That's awesome to hear! Keep smiling and spreading positivity around!",
+                    "I'm so glad you're feeling happy! Remember, happiness is contagious, so share your joy with others!",
+                    "It's great to hear you're in a good mood! Keep that positive energy flowing!",
+                    "Yay! Keep shining and enjoying the little moments in life. You deserve all the happiness!",
+                    "I'm thrilled you're feeling happy! Life is beautiful when we embrace happiness.",
+                    "I love to hear that you're happy! Keep up the good vibes and spread joy wherever you go.",
+                    "Happiness is one of the best feelings in the world! Hold onto it and enjoy every moment.",
+                    "You deserve all the happiness in the world! I'm so happy to hear you're feeling great!",
+                    "Wonderful! Keep that smile going. The world needs more people like you with such positive energy!",
+                    "Feeling happy is one of the best gifts you can give yourself! Keep enjoying the good moments.",
+                    "Your happiness brings joy to those around you. Keep spreading those positive vibes!",
+                    "You're radiating good energy! Keep it up, and remember that happiness is a journey, not just a destination!",
+                    "It’s fantastic that you're in such a great mood! Cherish these happy moments!",
+                    "I love seeing you so happy! Keep smiling and stay positive!",
+                    "So happy to hear you're feeling joyful! Keep embracing the happiness and let it brighten your day.",
+                    "The world feels brighter when you're happy! Enjoy these moments and make the most of them!",
+                    "Feeling good today? Let that positive energy carry you throughout the day!",
+                    "That’s fantastic! Celebrate every little joy in life. Happiness is always worth cherishing."
+                ],
+                sad: [
+                    "I'm really sorry you're feeling sad. It's okay to feel that way sometimes. Would you like to talk about it?",
+                    "It's tough when you're feeling down, but remember that it's just a phase, and it will pass. You're stronger than you think.",
+                    "I'm here for you. It's okay to not feel okay sometimes. Take your time, and know you're not alone.",
+                    "I understand it's hard, but you're not alone in this. It's important to take it one step at a time.",
+                    "It's okay to feel sad, and it's okay to take a break. Self-care is important, and you're worth it.",
+                    "I know you're going through a rough time. Remember that it's okay to reach out to someone you trust for support.",
+                    "I'm sorry you're feeling this way. If you're comfortable, talking about it might help you feel a little better.",
+                    "Sometimes it's okay to just take a moment for yourself and let your feelings out. You're important, and your emotions matter.",
+                    "Things may feel heavy right now, but remember, you're not alone in this. Reach out when you're ready.",
+                    "You don't have to go through this by yourself. If you ever need someone to listen, I'm here.",
+                    "It's okay to cry or feel down. It doesn't make you weak; it makes you human. You're allowed to feel.",
+                    "I know you're hurting, but it won't be this way forever. Healing takes time, and you're worth the wait.",
+                    "Sometimes life gets tough, but you have the strength to get through it. Take it one step at a time.",
+                    "It's important to take care of yourself, especially when you're feeling low. You're not alone in this journey.",
+                    "If you're feeling overwhelmed, it's okay to take a break and focus on things that bring you comfort.",
+                    "I'm here for you. If you'd like, I can also share some helplines that might help you."
+                ]
+            };
+
+            return responses[mood][Math.floor(Math.random() * responses[mood].length)];
+        }
+
+        function tellJoke() {
+            const jokes = [
+                "Why don’t skeletons fight each other? They don’t have the guts.",
+                "Why did the scarecrow win an award? Because he was outstanding in his field!",
+                "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+                "I used to play piano by ear, but now I use my hands.",
+                "What do you get when you cross a snowman and a vampire? Frostbite.",
+                "Why don’t oysters share their pearls? Because they’re shellfish.",
+                "I told my computer I needed a break, and now it won’t stop sending me Kit-Kats.",
+                "What did the grape do when it got stepped on? Nothing, but it let out a little wine.",
+                "Why don’t some couples go to the gym? Because some relationships don’t work out.",
+                "Why did the coffee file a police report? It got mugged.",
+                "I used to be a baker, but I couldn’t make enough dough.",
+                "I told my friend 10 jokes to make him laugh. Sadly, no pun in 10 did.",
+                "Why don’t eggs tell jokes? They’d crack each other up.",
+                "I’m reading a book on anti-gravity. It’s impossible to put down.",
+                "I wanted to become a professional skateboarder, but I couldn’t handle the grind.",
+                "How does a penguin build its house? Igloos it together!",
+                "Why did the bicycle fall over? Because it was two-tired.",
+                "Why can’t you trust an atom? Because they make up everything!",
+                "Did you hear about the mathematician who’s afraid of negative numbers? He’ll stop at nothing to avoid them.",
+                "What did one ocean say to the other ocean? Nothing, they just waved."
+            ];
+
+            // Select a random joke
+            const joke = jokes[Math.floor(Math.random() * jokes.length)];
+
+            displayMarthaResponse(joke);
+            speak(joke);
+        }
+
+    function processCommand(command) {
+    console.log("Processing command:", command);
+
+    if (/\bhello\b/.test(command) || /\bhi\b/.test(command)) {
+        const response = "Hello there! How can I assist you today?";
+        displayMarthaResponse(response);
+        speak(response);
+    }
+    else if (command.includes("translate")) {
+        handleTranslation(command);
+    }
+    else if (command.startsWith('search for')) {
+        const query = command.replace('search for', '').trim();
+        if (query.length > 0) {
+            const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+            const preparingMessage = `Well, searching Google for "${query}".`;
+            const goodbyeMessage = "Opening Google search results now.";
+
+            displayMarthaResponse(preparingMessage);
+            speak(preparingMessage, () => {
+                displayMarthaResponse(goodbyeMessage);
+                speak(goodbyeMessage, () => {
+                    window.open(searchUrl, '_blank');
+                });
+            });
+        } else {
+            const response = "Uhh, could you be more specific? What should I search for?";
+            displayMarthaResponse(response);
+            speak(response);
+        }
+    }
+    else if (command.includes('who are you') || command.includes('what are you') || command.includes('tell me about yourself')) {
+        const response = "Well, I am Martha, your virtual agent. I was designed to help you with tasks, answer your questions, and make your day easier!";
+        displayMarthaResponse(response);
+        speak(response);
+    }
+    else if (command.includes('creator') || command.includes('created you')) {
+        const response = "I wasn't created to be specific but I was programmed by Rahul and Melwin Anthony.";
+        displayMarthaResponse(response);
+        speak(response);
+    }
+    else if (command.includes('tell me a joke')) {
+        tellJoke();
+    }
+    else if (command.includes('thank you') || command.includes('thanks')) {
+        const response = "Ohh, it was truly my pleasure!";
+        displayMarthaResponse(response);
+        speak(response);
+    } 
+    else if (/\bhow are you\b/.test(command) || /\bhow is it going\b/.test(command)) {
+        const response = "i'm doing great, What about you?";
+        displayMarthaResponse(response);
+        speak(response);
+    }
+    else if (command.includes('shutdown') || command.includes('goodbye')) {
+        const response = "Well then, goodbye! Shutting down, Refresh the page if you wanna start interacting again";
+        displayMarthaResponse(response);
+        speak(response);
+
+        setTimeout(() => {
+            document.body.style.display = 'none';
+        }, 1000);
+    }
+    else if (/\bgood\b/.test(command) || /\bgreat\b/.test(command)) {
+        const response = "Well that’s nice! I’m glad to hear that, So what can I assist you with today?";
+        displayMarthaResponse(response);
+        speak(response);
+    }
+    else if (command.includes("latest news") || command.includes("news updates")) {
+        getLatestNews();
+    }
+    else if (command.includes('play') && command.includes('on youtube')) {
+        const query = command.replace('play', '').replace('on youtube', '').trim();
+        if (query.length > 0) {
+            const googleSearchUrl = `https://www.google.com/search?q=site:youtube.com+${encodeURIComponent(query)}&btnI`;
+            const preparingMessage = `Searching and playing "${query}" directly on YouTube.`;
+            const goodbyeMessage = "Alrighty, enjoy your video! I'll be right here when you return.";
+
+            displayMarthaResponse(preparingMessage);
+            speak(preparingMessage, () => {
+                displayMarthaResponse(goodbyeMessage);
+                speak(goodbyeMessage, () => {
+                    window.open(googleSearchUrl, '_blank');
+                });
+            });
+        } else {
+            const response = "Please specify what you want me to play on YouTube.";
+            displayMarthaResponse(response);
+            speak(response);
+        }
+    }
+    else if (command.includes('happy')) {
+        const response = getRandomResponse("happy");
+        displayMarthaResponse(response);
+        speak(response);
+    }
+    else if (command.includes('sad')) {
+        const response = getRandomResponse("sad");
+        displayMarthaResponse(response);
+        speak(response);
+    }
+    else if (command.includes('room temperature')) {
+        const response = "I can't be accurate but, The room temperature ranges from: 20–22 °C";
+        displayMarthaResponse(response);
+        speak(response);
+    }
+    else if (command.includes('book tickets for bus')) {
+        const response = "Opened bus ticket booking website...";
+        displayMarthaResponse(response);
+        speak(response);
+        window.open("https://www.redbus.in");
+    }
+    else if (command.includes('book tickets for train')) {
+        const response = "Opened train ticket booking website...";
+        displayMarthaResponse(response);
+        speak(response);
+        window.open("https://www.irctc.co.in");
+    }
+    else if (command.includes('book tickets for flight')) {
+        const response = "Opened flight ticket booking website...";
+        displayMarthaResponse(response);
+        speak(response);
+        window.open("https://www.expedia.com");
+    }
+    else if (command.includes('book tickets for movie')) {
+        const response = "Movieee! Can you take me? oh- nevermind, Opened book ticket booking website...";
+        displayMarthaResponse(response);
+        speak(response);
+        window.open("https://in.bookmyshow.com/explore/home/bengaluru");
+    }
+    else if (command.includes('introduce yourself to')) {
+        let name = command.split('introduce yourself to')[1].trim();
+        if (name) {
+            introduceYourselfTo(name);
+        } else {
+            const response = "Uhh, I need a name to introduce myself properly.";
+            displayMarthaResponse(response);
+            speak(response);
+        }
+    }
+    else if (command.includes('turn on text mode')) {
+        const response = "Umm, alright, text mode is now activated.. You can type commands now.";
+        displayMarthaResponse(response);
+        speak(response);
+        commandInput.style.display = "block";
+    }
+    else if (command.includes('turn off text mode')) {
+        turnOffTextMode();
+    }
+    else if (command.includes('open object detection')) {
+        const response = "Ohh, please go ahead and upload an image for object detection.";
+        displayMarthaResponse(response);
+        speak(response);
+        imageUpload.click();
+    }
+    else if (command.toLowerCase().includes("easiest route from")) {
+        const match = command.match(/easiest route from (.+?) to (.+)/i);
+        if (match) {
+            const from = match[1].trim();
+            const to = match[2].trim();
+            getGoogleMapsRouteWithFromTo(from, to);
+        } else {
+            const response = "Please say: easiest route from place to place";
+            displayMarthaResponse(response);
+            speak(response);
+        }
+    }
+    else if (command.includes('time') || command.includes('date')) {
+        const currentDate = new Date();
+        const time = currentDate.toLocaleTimeString();
+        const date = currentDate.toLocaleDateString();
+        const response = `Umm, the current time is ${time} and the date is ${date}.`;
+        displayMarthaResponse(response);
+        speak(response);
+    }
+    else if (command.includes('turn on vision')) {
+        const response = "Ohh, activating vision using your webcam.";
+        document.querySelector("footer").style.display = "none";
+        displayMarthaResponse(response);
+        speak(response);
+        startWebcam();
+    }
+    else if (command.includes('what do you see')) {
+        describeVision();
+    }
+    else if (command.includes('turn off vision')) {
+        stopWebcam();
+        document.querySelector("footer").style.display = "block";
+    }
+    else if (command.includes('weather') || command.includes('temperature')) {
+        let location = 'Bangalore';
+        if (command.includes('in')) {
+            location = command.split('in')[1].trim();
+        }
+        getWeatherWithoutAPI(location);
+    }
+    else if (command.includes('wikipedia') && command.includes('search')) {
+        const query = command.replace('wikipedia search', '').trim();
+        searchWikipedia(query);
+    }
+    else if (command.startsWith('who is')) {
+        const person = command.replace('who is', '').trim();
+        searchWikipedia(person);
+    }
+    else if (command.startsWith('what is')) {
+        const topic = command.replace('what is', '').trim();
+        searchWikipedia(topic);
+    }
+    else if (command.startsWith('how does') || command.startsWith('how do')) {
+        const question = command.replace(/^how (does|do)/, '').replace('work', '').trim();
+        searchWikipedia(question);
+    }
+    else if (command.startsWith('how to') || command.startsWith('how can i')) {
+        const question = command.replace(/^how (to|can i)/, '').replace('do', '').trim();
+        searchWikipedia(question);
+    }
+    else if (command.startsWith('how')) {
+        const question = command.replace('how', '').trim();
+        searchWikipedia(question);
+    }
+    else if (command.includes("book about") || command.startsWith("find book")) {
+    const query = command.replace(/book about|find book/i, '').trim();
+    searchBooks(query);
+    }
+    else if (command.includes("give me advice") || command.includes("say something wise")) {
+    getRandomAdvice();
+    }
+
+   else if (command.match(/\d+\s*%\s*of/i)) {
+    solvePercentage(command);
+}
+else if (command.includes("convert")) {
+    convertUnits(command);
+}
+else if (command.includes("area of")) {
+    calculateArea(command);
+}
+else if (
+    command.includes("calculate") ||
+    command.includes("solve") ||
+    command.includes("evaluate")
+) {
+    evaluateMath(command);
+}
+
+   
+    else if (command.includes("fun fact about") || command.includes("tell me about number")) {
+    const match = command.match(/\d+/);
+    if (match) {
+        getNumberFact(match[0]);
+    } else {
+        const response = "Tell me which number you're curious about!";
+        displayMarthaResponse(response);
+        speak(response);
+    }
+}
+
+}
+
+function evaluateMath(command) {
+    try {
+        let expression = command.toLowerCase();
+
+        // Replace natural language with math symbols
+        expression = expression
+            .replace(/calculate|solve|evaluate/g, "")
+            .replace(/plus/g, "+")
+            .replace(/minus/g, "-")
+            .replace(/times|into/g, "*")
+            .replace(/divided by/g, "/")
+            .replace(/over/g, "/")
+            .replace(/modulus|mod|remainder/g, "%")
+            .replace(/[^0-9+\-*/().%^ ]/g, "") // remove anything that's not a number/operator
+
+        expression = expression.trim();
+
+        if (expression === "") {
+            speak("I couldn't find a math expression to calculate.");
+            return;
+        }
+
+        // Evaluate safely
+        const result = Function(`"use strict"; return (${expression})`)();
+        const response = `The answer is ${result}`;
+        displayMarthaResponse(response);
+        speak(response);
+    } catch (err) {
+        console.error("Math evaluation error:", err);
+        speak("Sorry, I couldn't calculate that.");
+    }
+}
+
+
+function solvePercentage(command) {
+    const match = command.match(/(\d+)\s*% of (\d+)/i);
+    if (match) {
+        const percent = parseFloat(match[1]);
+        const base = parseFloat(match[2]);
+        const result = (percent / 100) * base;
+        const response = `${percent}% of ${base} is ${result}`;
+        displayMarthaResponse(response);
+        speak(response);
+    } else {
+        speak("Please say something like 'What is 20 percent of 300'");
+    }
+}
+
+function convertUnits(command) {
+    const match = command.match(/convert (\d+(\.\d+)?) (\w+) to (\w+)/i);
+    if (!match) {
+        speak("Please say something like 'Convert 5 kilometers to miles'");
+        return;
+    }
+
+    const value = parseFloat(match[1]);
+    const from = match[3].toLowerCase();
+    const to = match[4].toLowerCase();
+
+    const conversions = {
+        kilometers: { miles: 0.621371 },
+        miles: { kilometers: 1.60934 },
+        celsius: { fahrenheit: (c) => (c * 9/5 + 32) },
+        fahrenheit: { celsius: (f) => ((f - 32) * 5/9) },
+        kg: { pounds: 2.20462 },
+        pounds: { kg: 0.453592 }
+    };
+
+    const factor = conversions[from]?.[to];
+
+    let result = null;
+    if (typeof factor === "function") {
+        result = factor(value).toFixed(2);
+    } else if (typeof factor === "number") {
+        result = (value * factor).toFixed(2);
+    }
+
+    if (result !== null) {
+        const response = `${value} ${from} is ${result} ${to}`;
+        displayMarthaResponse(response);
+        speak(response);
+    } else {
+        speak(`Sorry, I can't convert from ${from} to ${to} yet.`);
+    }
+}
+
+function calculateArea(command) {
+    const circleMatch = command.match(/area of circle with radius (\d+)/i);
+    const squareMatch = command.match(/area of square with side (\d+)/i);
+    const triangleMatch = command.match(/area of triangle with base (\d+) and height (\d+)/i);
+
+    if (circleMatch) {
+        const radius = parseFloat(circleMatch[1]);
+        const area = (Math.PI * radius * radius).toFixed(2);
+        speak(`The area of the circle is ${area}`);
+        displayMarthaResponse(`Area of circle with radius ${radius} is ${area}`);
+    } else if (squareMatch) {
+        const side = parseFloat(squareMatch[1]);
+        const area = side * side;
+        speak(`The area of the square is ${area}`);
+        displayMarthaResponse(`Area of square with side ${side} is ${area}`);
+    } else if (triangleMatch) {
+        const base = parseFloat(triangleMatch[1]);
+        const height = parseFloat(triangleMatch[2]);
+        const area = (0.5 * base * height).toFixed(2);
+        speak(`The area of the triangle is ${area}`);
+        displayMarthaResponse(`Area of triangle with base ${base} and height ${height} is ${area}`);
+    } else {
+        speak("Please say something like 'area of circle with radius 5'");
+    }
+}
+
+
+function searchBooks(query) {
+    const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}`;
+
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            if (data.docs && data.docs.length > 0) {
+                const book = data.docs[0];
+                const title = book.title;
+                const author = book.author_name ? book.author_name.join(', ') : 'Unknown author';
+                const year = book.first_publish_year || 'unknown year';
+
+                const response = `I found this book: "${title}" by ${author}, first published in ${year}.`;
+                displayMarthaResponse(response);
+                speak(response);
+            } else {
+                const response = "Hmm, I couldn't find any books for that topic.";
+                displayMarthaResponse(response);
+                speak(response);
+            }
+        })
+        .catch(error => {
+            console.error("OpenLibrary error:", error);
+            speak("Oops, I couldn't fetch book details right now.");
+        });
+}
+
+function getNumberFact(number) {
+    const url = `http://numbersapi.com/${number}`;
+
+    fetch(url)
+        .then(res => res.text())
+        .then(fact => {
+            displayMarthaResponse(fact);
+            speak(fact);
+        })
+        .catch(error => {
+            console.error("Numbers API error:", error);
+            speak("I couldn’t get any number facts right now.");
+        });
+}
+
+
+
+// Helper to decode HTML entities in API text
+function decodeHtml(html) {
+    const txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
+}
+
+
+function getRandomAdvice() {
+    const url = `https://api.adviceslip.com/advice`;
+
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            const advice = data.slip.advice;
+            displayMarthaResponse(advice);
+            speak(advice);
+        })
+        .catch(error => {
+            console.error("Advice API error:", error);
+            speak("Sorry, I couldn't fetch any advice right now.");
+        });
+}
+
+
+        // Introduce Martha to a user
+        function introduceYourselfTo(name) {
+            const response = `Hello ${name}, I am Martha, your virtual agent. It was a pleasure meeting you!`;
+            displayMarthaResponse(response);
+            speak(response);
+        }
+        function getGoogleMapsRouteWithFromTo(start, destination) {
+            const url = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(start)}&destination=${encodeURIComponent(destination)}`;
+            const message = `Okay so this is the eassiest route from ${start} to ${destination} that I found in Google Maps...`;
+            displayMarthaResponse(message);
+            speak(message);
+            window.open(url, '_blank');
+        }
+        function handleTranslation(command) {
+            const match = command.match(/translate (.+?) to (.+)/i);
+            if (!match) {
+                const response = "Please say something like 'Translate good morning to Hindi'";
+                displayMarthaResponse(response);
+                speak(response);
+                return;
+            }
+
+            const textToTranslate = match[1].trim();
+            const targetLang = match[2].trim().toLowerCase();
+
+            const langMap = {
+                hindi: "hi",
+                tamil: "ta",
+                kannada: "kn",
+                malayalam: "ml",
+                telugu: "te",
+                marathi: "mr",
+                bengali: "bn",
+                urdu: "ur",
+                gujarati: "gu",
+                punjabi: "pa",
+                french: "fr",
+                spanish: "es",
+                german: "de",
+                italian: "it",
+                portuguese: "pt",
+                russian: "ru",
+                chinese: "zh",
+                japanese: "ja",
+                korean: "ko",
+                arabic: "ar",
+                turkish: "tr",
+                greek: "el",
+                dutch: "nl",
+                polish: "pl",
+                swedish: "sv",
+                thai: "th",
+                vietnamese: "vi"
+                // Add more languages here
+            };
+
+            const langCode = langMap[targetLang];
+
+            if (!langCode) {
+                const response = `Sorry, I don't support translation to ${targetLang} yet.`;
+                displayMarthaResponse(response);
+                speak(response);
+                return;
+            }
+
+            const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(textToTranslate)}&langpair=en|${langCode}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const translated = data.responseData.translatedText;
+                    const output = `In ${targetLang}, "${textToTranslate}" is "${translated}"`;
+                    displayMarthaResponse(output);
+                    speak(output);
+                })
+                .catch(error => {
+                    console.error("Translation error:", error);
+                    const response = "Hmm, sorry, I couldn’t complete the translation.";
+                    displayMarthaResponse(response);
+                    speak(response);
+                });
+        }
+
+        function getWeatherWithoutAPI(location = 'Bangalore') {
+            const apiUrl = `https://wttr.in/${encodeURIComponent(location)}?format=%C+%t+%w`;
+            
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) throw new Error('Weather service unavailable');
+                    return response.text();
+                })
+                .then(data => {
+                    // Format: "Condition Temperature Wind"
+                    const [condition, temp, wind] = data.split(' ');
+                    const response = `In ${location}, it's currently ${condition.toLowerCase()} with a temperature of ${temp} and ${wind} wind.`;
+                    displayMarthaResponse(response);
+                    speak(response);
+                })
+                .catch(error => {
+                    console.error('Weather error:', error);
+                    const response = `I couldn't get the weather for ${location}. Please try again later.`;
+                    displayMarthaResponse(response);
+                    speak(response);
+                });
+        }
+
+        function getLatestNews() {
+            const rssUrl = 'https://news.google.com/rss?hl=en-IN&gl=IN&ceid=IN:en';
+
+            fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const parser = new DOMParser();
+                    const xmlDoc = parser.parseFromString(data.contents, "text/xml");
+                    const items = xmlDoc.querySelectorAll("item");
+                    if (items.length > 0) {
+                        const title = items[0].querySelector("title").textContent;
+                        const response = `Here is the latest news: ${title}`;
+                        displayMarthaResponse(response);
+                        speak(response);
+                    } else {
+                        const response = "Hmm, sorry, I couldn’t find any news at the moment.";
+                        displayMarthaResponse(response);
+                        speak(response);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching news:", error);
+                    const response = "Hmm, sorry, I couldn’t fetch the news right now.";
+                    displayMarthaResponse(response);
+                    speak(response);
+                });
+        }
+
+        imageUpload.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedImage.src = e.target.result;
+                    runObjectDetection(e.target.result); // Run object detection on the uploaded image
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Run object detection
+        function runObjectDetection(imageSrc) {
+            const image = new Image();
+            image.src = imageSrc;
+            image.onload = () => {
+                model.detect(image).then(predictions => {
+                    console.log(predictions);
+                    let detectedObjects = predictions.map(p => p.class).join(', ');
+                    const response = `${detectedObjects} has been detected from the image provided.`;
+                    displayMarthaResponse(response);
+                    speak(response);
+                });
+            };
+                uploadedImage.src = '';
+                uploadedImage.style.display = 'none';
+        }
+    
+        function searchWikipedia(query) {
+            const url = `${WIKIPEDIA_API_URL}${encodeURIComponent(query)}`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.extract) {
+                        const response = data.extract;
+                        displayMarthaResponse(response);
+                        speak(response);
+                    } else {
+                        const response = "Hmm, sorry, I couldn’t find an answer for that.";
+                        displayMarthaResponse(response);
+                        speak(response);
+                    }
+                })
+                .catch(error => {
+                    console.error('Wikipedia search error:', error);
+                    const response = "Sorry, there was an error while fetching from Wikipedia.";
+                    displayMarthaResponse(response);
+                    speak(response);
+                });
+        }
+    
+        // Event listener for text input
+       commandInput.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        const command = event.target.value.toLowerCase().trim();
+        if (command) {
+            displayUserText(command);
+
+            // Temporarily disable speak()
+            const originalSpeak = speak;
+            speak = function() {}; // Disable speaking
+            processCommand(command);
+            speak = originalSpeak; // Restore speaking
+
+            event.target.value = '';
+        }
+    }
+});
+
+
+    
+        // Speak when the button is clicked
+       document.getElementById('speak-btn').addEventListener('click', function () {
+    if (!isListening) {
+        startListening();
+        isListening = true;
+    } else {
+        recognition.stop();
+        isListening = false;
+        const response = "Okay, I've stopped listening.";
+        displayMarthaResponse(response);
+        speak(response);
+    }
+});
+
+document.getElementById('text-btn').addEventListener('click', function () {
+    if (!isTextMode) {
+        const response = "Text mode is now active. You can type commands below.";
+        displayMarthaResponse(response);
+        speak(response);
+        commandInput.style.display = "block";
+        commandInput.focus();
+        isTextMode = true;
+        isTypingMode = true;  // ❌ Disable speaking during typing
+    } else {
+        const response = "Okay, turned off text mode now.. The input box has been removed.";
+        displayMarthaResponse(response);
+        // Do NOT call speak() here — just show response silently
+        commandInput.style.display = "none";
+        isTextMode = false;
+        isTypingMode = false;  // ✅ Re-enable speaking for future
+    }
+});
+
+  const visionBtn = document.getElementById('vision-btn');
+
+  visionBtn.addEventListener('mouseover', () => {
+      visionBtn.style.backgroundColor = '#0099cc';
+      visionBtn.style.transform = 'scale(1.1)';
+      visionBtn.style.boxShadow = '0 0 20px 4px rgba(0,255,255,0.8)';
+  });
+
+  visionBtn.addEventListener('mouseout', () => {
+      visionBtn.style.backgroundColor = '#398181';
+      visionBtn.style.transform = 'scale(1)';
+      visionBtn.style.boxShadow = '0 0 10px 2px rgba(0,255,255,0.5)';
+  });
+
+  visionBtn.addEventListener('click', () => {
+      const response = "Ohh, activating vision using your webcam.";
+      document.querySelector("footer").style.display = "none";
+      displayMarthaResponse(response);
+      speak(response);
+      startWebcam();
+  });
+</script>
+</body>
+</html>

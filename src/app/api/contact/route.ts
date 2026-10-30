@@ -10,26 +10,23 @@ export async function POST(request: Request) {
     const smtpUser = process.env.SMTP_USER;
     const smtpPass = process.env.SMTP_PASS;
 
-    if (!smtpUser || !smtpPass) {
-      // SMTP credentials not configured - notify frontend to fallback to FormSubmit
-      return NextResponse.json({ useFallback: true });
-    }
+    // ── Method 1: SMTP Nodemailer (Gmail App Password) ──
+    if (smtpUser && smtpPass) {
+      const logoPath = path.join(process.cwd(), "public", "bglogo.png");
+      const logoExists = fs.existsSync(logoPath);
+      const logoSrc = logoExists ? "cid:pixelcultlogo" : "https://pixelcult.net/bglogo.png";
 
-    const logoPath = path.join(process.cwd(), "public", "bglogo.png");
-    const logoExists = fs.existsSync(logoPath);
-    const logoSrc = logoExists ? "cid:pixelcultlogo" : "https://pixelcult.com/bglogo.png";
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST || "smtp.gmail.com",
+        port: parseInt(process.env.SMTP_PORT || "465"),
+        secure: true,
+        auth: {
+          user: smtpUser,
+          pass: smtpPass,
+        },
+      });
 
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || "smtp.gmail.com",
-      port: parseInt(process.env.SMTP_PORT || "465"),
-      secure: true,
-      auth: {
-        user: smtpUser,
-        pass: smtpPass,
-      },
-    });
-
-    const htmlContent = `
+      const htmlContent = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -142,29 +139,36 @@ export async function POST(request: Request) {
   </div>
 </body>
 </html>
-    `;
+      `;
 
-    const attachments = [];
-    if (logoExists) {
-      attachments.push({
-        filename: "bglogo.png",
-        path: logoPath,
-        cid: "pixelcultlogo",
+      const attachments = [];
+      if (logoExists) {
+        attachments.push({
+          filename: "bglogo.png",
+          path: logoPath,
+          cid: "pixelcultlogo",
+        });
+      }
+
+      await transporter.sendMail({
+        from: `"PixelCult Portal" <${smtpUser}>`,
+        to: "info.pixelcult@gmail.com",
+        replyTo: Email,
+        subject: `[PixelCult Portal] New Lead: ${Name} (${Organization})`,
+        html: htmlContent,
+        attachments,
       });
+
+      return NextResponse.json({ success: true, method: "smtp" });
     }
 
-    await transporter.sendMail({
-      from: `"PixelCult Portal" <${smtpUser}>`,
-      to: "info.pixelcult@gmail.com",
-      replyTo: Email,
-      subject: `[PixelCult Portal] New Lead: ${Name} (${Organization})`,
-      html: htmlContent,
-      attachments,
+    return NextResponse.json({
+      success: false,
+      error: "SMTP credentials not configured. Please ensure SMTP_PASS is set in .env.local.",
     });
-
-    return NextResponse.json({ success: true });
-  } catch (error: any) {
-    console.error("SMTP Mail transmission error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    const err = error as { message?: string };
+    console.error("Nodemailer transmission error:", error);
+    return NextResponse.json({ error: err.message || "Failed to transmit message via Nodemailer" }, { status: 500 });
   }
 }

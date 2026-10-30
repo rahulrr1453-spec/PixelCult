@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Outfit, Fira_Code } from "next/font/google";
 import "./globals.css";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
@@ -16,11 +16,17 @@ const firaCode = Fira_Code({
   weight: ["400", "600"],
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export const metadata: Metadata = {
   title: "PixelCult — Engineering Scale & Logic",
   description:
     "We architect high-performance websites, native Android applications, complex full-stack webapps, and intelligent AI integrations.",
-  metadataBase: new URL("https://pixelcult.com"),
+  metadataBase: new URL("https://pixelcult.net"),
   icons: {
     icon: "/bglogo.png",
     shortcut: "/bglogo.png",
@@ -38,10 +44,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${outfit.variable} ${firaCode.variable} h-full antialiased`}
+      className={`${outfit.variable} ${firaCode.variable} h-full antialiased overflow-x-hidden`}
     >
       <body 
-        className="relative min-h-full bg-background text-foreground grain"
+        className="relative min-h-full w-full max-w-full overflow-x-hidden bg-background text-foreground grain"
         suppressHydrationWarning
       >
         <DigitalCore />

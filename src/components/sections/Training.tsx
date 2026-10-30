@@ -79,11 +79,12 @@ export function Training() {
           <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-accent/10 border border-accent/20">
             <GraduationCap size={32} className="text-accent" />
           </div>
+          <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent mb-2">NextSkill // Powered by PixelCult</p>
           <h2 className="font-sans text-4xl font-black text-foreground md:text-5xl lg:text-6xl">
             Technical <span className="text-accent">Training.</span>
           </h2>
           <p className="mt-4 mx-auto max-w-3xl text-xl text-zinc-300">
-            We bridge the gap between academia and industry. Providing extensive technical courses with <span className="text-accent font-bold">hands-on project integration</span> and specializing in Final Year College Project Mentorship.
+            NextSkill, powered by PixelCult — bridging the gap between academia and industry. Providing extensive technical courses with <span className="text-accent font-bold">hands-on project integration</span> and specializing in Final Year College Project Mentorship.
           </p>
 
         </div>
@@ -166,7 +167,7 @@ export function Training() {
 
 
         {/* Mentorship Card */}
-        <div className="mt-12 overflow-hidden rounded-3xl border border-accent/20 bg-gradient-to-br from-slate-900 to-slate-950 p-8 md:p-12 relative">
+        <div className="mt-12 overflow-hidden rounded-3xl border border-accent/20 bg-gradient-to-br from-slate-900 to-slate-950 p-5 sm:p-8 md:p-12 relative">
           <div className="relative z-10 flex flex-col gap-8">
             <div className="flex items-center gap-5">
               <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-accent/10 border border-accent/20 text-accent">
@@ -194,14 +195,14 @@ export function Training() {
             <div className="flex flex-col sm:flex-row gap-4">
               <a
                 href="#contact"
-                className="group inline-flex w-fit items-center justify-center gap-2 rounded-xl bg-accent px-8 py-4 font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-background transition-all duration-300 hover:shadow-[0_0_30px_rgba(16,185,129,0.3)]"
+                className="group inline-flex w-full sm:w-fit items-center justify-center gap-2 rounded-xl bg-accent px-8 py-4 font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-background transition-all duration-300 hover:shadow-[0_0_30px_rgba(16,185,129,0.3)]"
               >
                 Get Project Help
                 <ArrowRight size={16} weight="bold" className="transition-transform group-hover:translate-x-1" />
               </a>
               <Link
                 href="/services#college-internships"
-                className="group inline-flex w-fit items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-8 py-4 font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-300 transition-all duration-300 hover:bg-white/10 hover:text-white"
+                className="group inline-flex w-full sm:w-fit items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-8 py-4 font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-300 transition-all duration-300 hover:bg-white/10 hover:text-white"
               >
                 View Internship Details
                 <ArrowRight size={16} weight="bold" className="transition-transform group-hover:translate-x-1" />

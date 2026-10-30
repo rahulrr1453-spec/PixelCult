@@ -1,10 +1,18 @@
 "use client";
 
-import { Volleyball, Heartbeat, ArrowSquareOut, PaintBrush, ArrowRight } from "@phosphor-icons/react";
+import { Volleyball, Heartbeat, ArrowSquareOut, PaintBrush, ArrowRight, Trophy } from "@phosphor-icons/react";
 import { TiltCard } from "@/components/ui/TiltCard";
 import Link from "next/link";
 
 const PROJECTS = [
+  {
+    title: "Apex Sports Academy",
+    category: "Sports Academy Platform",
+    description: "A comprehensive digital platform built for Bangalore's premier volleyball academy, featuring tournament registrations, coaching programs, and venue booking.",
+    icon: Trophy,
+    link: "https://apex-sports-academy.onrender.com",
+    color: "text-sky-400",
+  },
   {
     title: "YSC Throwball Club",
     category: "Full-Stack Webapp",
@@ -38,22 +46,22 @@ interface WorksProps {
 
 export function Works({ showViewMore = false }: WorksProps) {
   return (
-    <section id="works" className="relative z-10 py-24 px-6 md:px-12 bg-slate-900/20 border-y border-white/5">
+    <section id="works" className="relative z-10 py-16 sm:py-24 px-4 sm:px-6 md:px-12 bg-slate-900/20 border-y border-white/5 overflow-hidden">
       <div className="mx-auto max-w-[1400px]">
-        <div className="mb-16">
-          <h2 className="font-sans text-4xl font-black text-foreground md:text-5xl lg:text-6xl text-right">
+        <div className="mb-12 sm:mb-16">
+          <h2 className="font-sans text-3xl sm:text-5xl lg:text-6xl font-black text-foreground text-left sm:text-right tracking-tight">
             Featured <span className="text-accent">Deployments.</span>
           </h2>
-          <p className="mt-4 max-w-2xl text-lg text-muted ml-auto text-right">
+          <p className="mt-3 sm:mt-4 max-w-2xl text-base sm:text-lg text-muted sm:ml-auto text-left sm:text-right">
             A selection of the technical solutions and interfaces we have shipped since forming our collective.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2 lg:grid-cols-4 xl:gap-8 w-full">
           {PROJECTS.map((project, i) => (
-            <TiltCard key={i} delay={i * 0.1} className="p-8">
+            <TiltCard key={i} delay={i * 0.1} className="p-5 sm:p-6 xl:p-8">
               <div className="flex h-full flex-col pointer-events-none" style={{ transform: "translateZ(25px)" }}>
-                <div className="mb-8 flex items-start justify-between">
+                <div className="mb-6 sm:mb-8 flex items-start justify-between">
                   <div className={`flex h-12 w-12 items-center justify-center rounded-lg bg-white/5 ${project.color}`}>
                     <project.icon size={28} weight="duotone" />
                   </div>
@@ -69,9 +77,9 @@ export function Works({ showViewMore = false }: WorksProps) {
                   )}
                 </div>
                 
-                <h3 className="mb-1 text-2xl font-bold text-foreground">{project.title}</h3>
-                <p className="mb-4 font-mono text-[10px] uppercase tracking-widest text-brand-accent">{project.category}</p>
-                <p className="mb-8 flex-grow text-base leading-relaxed text-zinc-400">{project.description}</p>
+                <h3 className="mb-1 text-xl xl:text-2xl font-bold text-foreground break-words">{project.title}</h3>
+                <p className="mb-3 sm:mb-4 font-mono text-[9px] sm:text-[10px] uppercase tracking-widest text-brand-accent">{project.category}</p>
+                <p className="mb-6 sm:mb-8 flex-grow text-sm xl:text-base leading-relaxed text-zinc-400">{project.description}</p>
                 
                 {project.local ? (
                   <span className="font-mono text-xs italic text-zinc-600">Locally Hosted</span>

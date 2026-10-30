@@ -3,15 +3,15 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { ArrowUpRight, List, X } from "@phosphor-icons/react";
+import { ArrowUpRight } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 
 
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const [scrolled, setScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   // Build an href that works whether we're on home (anchor) or another page (/#section)
   const sectionHref = (section: string) =>
@@ -46,31 +46,31 @@ export function Navbar() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-[200] transition-[background-color,backdrop-filter,border-color] duration-300 ${scrolled
+        className={`fixed inset-x-0 top-0 z-[300] w-full max-w-[100vw] transition-[background-color,backdrop-filter,border-color] duration-300 ${scrolled
           ? "border-b border-white/10 bg-black/80 backdrop-blur-2xl"
           : "border-b border-transparent bg-transparent"
           }`}
       >
-        <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-4 md:px-12 md:py-4">
+        <div className="mx-auto flex max-w-[1400px] items-center justify-between px-4 sm:px-6 md:px-12 py-3.5 sm:py-4">
           {/* Logo — scrolls to top on home, navigates to / on other pages */}
           <Link
             href="/"
             onClick={handleLogoClick}
-            className="group flex items-center gap-4 transition-transform hover:scale-[1.01]"
+            className="group flex items-center gap-2.5 sm:gap-4 transition-transform hover:scale-[1.01] shrink-0"
           >
             <img
               src="/bglogo.png"
               alt="PixelCult Icon"
-              className="h-8 w-auto object-contain drop-shadow-[0_0_8px_rgba(52,211,153,0.4)]"
+              className="h-7 w-auto sm:h-8 object-contain drop-shadow-[0_0_8px_rgba(52,211,153,0.4)]"
             />
             <img
               src="/bgtext.png"
               alt="PixelCult"
-              className="h-4 w-20 object-contain brightness-125"
+              className="h-3.5 w-16 sm:h-4 sm:w-20 object-contain brightness-125"
             />
           </Link>
 
-          <div className="flex items-center gap-3 lg:gap-8">
+          <div className="flex items-center gap-2.5 sm:gap-3 lg:gap-8 shrink-0">
             <nav className="hidden items-center gap-8 lg:flex">
               {["Engineering"].map((item) => (
                 <a
@@ -101,7 +101,7 @@ export function Navbar() {
 
             <a
               href={sectionHref("contact")}
-              className="group hidden items-center gap-2 rounded-full border border-accent/20 bg-accent/5 px-5 py-2.5 font-sans text-[10px] font-black uppercase tracking-[0.2em] text-accent backdrop-blur-md transition-all duration-300 hover:bg-accent hover:text-black sm:inline-flex"
+              className="group hidden items-center gap-2 rounded-full border border-accent/20 bg-accent/5 px-4 sm:px-5 py-2 sm:py-2.5 font-sans text-[10px] font-black uppercase tracking-[0.2em] text-accent backdrop-blur-md transition-all duration-300 hover:bg-accent hover:text-black sm:inline-flex shrink-0"
             >
               Contact Us
               <ArrowUpRight size={14} weight="bold" />
@@ -110,7 +110,7 @@ export function Navbar() {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="relative z-[300] flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/10 text-foreground lg:hidden"
+              className="relative z-[310] flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/10 text-foreground transition-all duration-200 hover:bg-white/15 active:scale-95 lg:hidden"
               aria-label="Toggle Menu"
             >
               <AnimatePresence mode="wait">
@@ -121,7 +121,19 @@ export function Navbar() {
                     animate={{ rotate: 0, opacity: 1 }}
                     exit={{ rotate: 90, opacity: 0 }}
                   >
-                    <X size={20} weight="bold" />
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <line x1="18" y1="6" x2="6" y2="18" />
+                      <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
                   </motion.div>
                 ) : (
                   <motion.div
@@ -130,7 +142,20 @@ export function Navbar() {
                     animate={{ rotate: 0, opacity: 1 }}
                     exit={{ rotate: -90, opacity: 0 }}
                   >
-                    <List size={20} weight="bold" />
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <line x1="3" y1="12" x2="21" y2="12" />
+                      <line x1="3" y1="6" x2="21" y2="6" />
+                      <line x1="3" y1="18" x2="21" y2="18" />
+                    </svg>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -147,19 +172,9 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[300] flex flex-col bg-[#020617] lg:hidden"
+            className="fixed inset-0 z-[290] flex flex-col bg-[#020617] lg:hidden"
             style={{ isolation: "isolate" }}
           >
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.1 }}
-              onClick={() => setIsOpen(false)}
-              aria-label="Close Menu"
-              className="absolute top-5 right-5 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/10 text-foreground transition-colors hover:border-accent/40 hover:bg-accent/10 hover:text-accent"
-            >
-              <X size={20} weight="bold" />
-            </motion.button>
 
             <div className="flex flex-col items-center justify-center flex-grow gap-6 px-6 pt-20">
               {["Engineering"].map((item, i) => (
