@@ -27,7 +27,6 @@
 
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;
   max-width: 100vw;
 }
 
@@ -38,7 +37,6 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
   max-width: 100vw;
   width: 100%;
 }
@@ -46,7 +44,7 @@ body {
 body {
   background-color: var(--background);
   color: var(--foreground);
-  overflow-x: hidden;
+  overflow-x: clip;
   text-rendering: optimizeLegibility;
 }
 
@@ -80,18 +78,18 @@ body {
 }
 
 .scroll-animation {
-  height: 320vh;
+  height: 350vh;
 }
 
 @media (max-width: 1024px) {
   .scroll-animation {
-    height: 280vh;
+    height: 300vh;
   }
 }
 
 @media (max-width: 768px) {
   .scroll-animation {
-    height: 240vh;
+    height: 280vh;
   }
 }
 

@@ -89,7 +89,7 @@ export function ServicesClient() {
         }}
       />
 
-      <main className="relative z-10 w-full overflow-x-hidden">
+      <main className="relative z-10 w-full">
         {/* ── Page Hero ── */}
         <section className="relative flex min-h-[50vh] flex-col items-start justify-end px-4 sm:px-6 md:px-12 pb-16 pt-32 sm:pt-36 md:pb-20 md:pt-44 overflow-hidden">
           {/* Scanline grid texture */}

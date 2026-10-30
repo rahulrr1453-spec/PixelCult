@@ -37,24 +37,25 @@ export function Hero() {
 
         // Update elements via Refs for performance
         if (heroTextRef.current) {
-          // Keep hero main text firmly visible, then gently fade out between 0.12 and 0.24
+          // Keep hero main text visible, then gently fade out between 0.04 and 0.14
           let opacity = 1;
-          if (progress > 0.12) {
-            opacity = Math.max(0, 1 - (progress - 0.12) / 0.12);
+          if (progress > 0.04) {
+            opacity = Math.max(0, 1 - (progress - 0.04) / 0.10);
           }
           heroTextRef.current.style.opacity = String(opacity);
-          heroTextRef.current.style.transform = `translateY(${(1 - opacity) * 16}px)`;
+          heroTextRef.current.style.transform = `translateY(${(1 - opacity) * 14}px)`;
+          heroTextRef.current.style.pointerEvents = opacity > 0.05 ? "auto" : "none";
         }
 
         if (bigLeftTextRef.current) {
-          // Fade in smoothly from 0.18 to 0.28, stay solidly visible through 0.65, fade out by 0.76
+          // Fade in from 0.12 to 0.20, stay solidly visible through 0.46, fade out by 0.56
           let op = 0;
-          if (progress >= 0.18 && progress < 0.28) {
-            op = (progress - 0.18) / 0.1;
-          } else if (progress >= 0.28 && progress <= 0.65) {
+          if (progress >= 0.12 && progress < 0.20) {
+            op = (progress - 0.12) / 0.08;
+          } else if (progress >= 0.20 && progress <= 0.46) {
             op = 1;
-          } else if (progress > 0.65 && progress <= 0.76) {
-            op = 1 - (progress - 0.65) / 0.11;
+          } else if (progress > 0.46 && progress <= 0.56) {
+            op = 1 - (progress - 0.46) / 0.10;
           }
           
           bigLeftTextRef.current.style.opacity = String(Math.max(0, op));
@@ -71,14 +72,14 @@ export function Hero() {
         }
 
         if (logoRevealRef.current) {
-          // Logo text reveal appears solidly from 0.72 to 0.94
+          // Logo text reveal appears at the end: 0.78 to 0.96
           let logoOp = 0;
-          if (progress >= 0.72 && progress < 0.82) {
-            logoOp = (progress - 0.72) / 0.1;
-          } else if (progress >= 0.82 && progress <= 0.92) {
+          if (progress >= 0.78 && progress < 0.85) {
+            logoOp = (progress - 0.78) / 0.07;
+          } else if (progress >= 0.85 && progress <= 0.93) {
             logoOp = 1;
-          } else if (progress > 0.92 && progress <= 0.98) {
-            logoOp = 1 - (progress - 0.92) / 0.06;
+          } else if (progress > 0.93 && progress <= 0.98) {
+            logoOp = 1 - (progress - 0.93) / 0.05;
           }
           
           logoRevealRef.current.style.opacity = String(Math.max(0, logoOp));
@@ -87,44 +88,26 @@ export function Hero() {
           logoRevealRef.current.style.transform = `perspective(1000px) translateZ(${zOffset}px) rotateX(${rotateX}deg)`;
         }
 
-        // Update dialogue cards visibility with ample dwell time so text is never cut short
+        // Update dialogue cards visibility: sequential appearance so each text gets full focus
         if (dialoguesContainerRef.current) {
           const cards = dialoguesContainerRef.current.children;
-          const isMobile = window.innerWidth < 768;
 
           DIALOGUES.forEach((d, i) => {
             const card = cards[i] as HTMLElement;
             if (!card) return;
 
+            const start = i === 0 ? 0.14 : i === 1 ? 0.36 : 0.58;
+            const end = i === 0 ? 0.34 : i === 1 ? 0.56 : 0.78;
+            const ramp = 0.05;
+
             let cardOp = 0;
-
-            if (isMobile) {
-              // Mobile: Each card gets a generous dwell window
-              const mStart = i === 0 ? 0.18 : i === 1 ? 0.44 : 0.68;
-              const mEnd = i === 0 ? 0.44 : i === 1 ? 0.68 : 0.92;
-              
-              if (progress >= mStart && progress <= mEnd) {
-                if (progress < mStart + 0.05) {
-                  cardOp = (progress - mStart) / 0.05;
-                } else if (progress > mEnd - 0.05) {
-                  cardOp = (mEnd - progress) / 0.05;
-                } else {
-                  cardOp = 1;
-                }
-              }
-            } else {
-              // Desktop: Cards appear in sequence and stay docked on the right
-              const dStart = i === 0 ? 0.20 : i === 1 ? 0.38 : 0.56;
-              const dEnd = 0.90;
-
-              if (progress >= dStart && progress <= dEnd) {
-                if (progress < dStart + 0.06) {
-                  cardOp = (progress - dStart) / 0.06;
-                } else if (progress > dEnd - 0.06) {
-                  cardOp = (dEnd - progress) / 0.06;
-                } else {
-                  cardOp = 1;
-                }
+            if (progress >= start && progress <= end) {
+              if (progress < start + ramp) {
+                cardOp = (progress - start) / ramp;
+              } else if (progress > end - ramp) {
+                cardOp = (end - progress) / ramp;
+              } else {
+                cardOp = 1;
               }
             }
 
@@ -151,7 +134,7 @@ export function Hero() {
     <section ref={sectionRef} className="scroll-animation relative">
       <div
         className="sticky top-0 min-h-[100dvh] w-full overflow-hidden bg-transparent"
-        style={{ height: "100dvh", willChange: "transform", transform: "translateZ(0)" }}
+        style={{ height: "100dvh" }}
       >
         <div
           className="pointer-events-none absolute inset-0"

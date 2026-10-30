@@ -17,7 +17,7 @@ export default function Home() {
     <>
       <Navbar />
 
-      <main ref={containerRef} className="relative z-10 w-full overflow-x-hidden">
+      <main ref={containerRef} className="relative z-10 w-full">
         <Hero />
 
         <div id="engineering" className="relative bg-transparent overflow-hidden w-full">
