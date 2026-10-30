@@ -37,27 +37,29 @@ export function Hero() {
 
         // Update elements via Refs for performance
         if (heroTextRef.current) {
-          const opacity = Math.max(0, 1 - progress / HERO_TEXT_FADE_END);
+          // Keep hero main text firmly visible, then gently fade out between 0.12 and 0.24
+          let opacity = 1;
+          if (progress > 0.12) {
+            opacity = Math.max(0, 1 - (progress - 0.12) / 0.12);
+          }
           heroTextRef.current.style.opacity = String(opacity);
-          heroTextRef.current.style.transform = `translateY(${(1 - opacity) * 12}px)`;
+          heroTextRef.current.style.transform = `translateY(${(1 - opacity) * 16}px)`;
         }
 
         if (bigLeftTextRef.current) {
-          // Fade in at 0.1, fade out at 0.3 to clear space for dialogues
+          // Fade in smoothly from 0.18 to 0.28, stay solidly visible through 0.65, fade out by 0.76
           let op = 0;
-          if (progress > 0.1 && progress < 0.2) {
-            op = (progress - 0.1) / 0.1;
-          } else if (progress >= 0.2 && progress <= 0.3) {
+          if (progress >= 0.18 && progress < 0.28) {
+            op = (progress - 0.18) / 0.1;
+          } else if (progress >= 0.28 && progress <= 0.65) {
             op = 1;
-          } else if (progress > 0.3 && progress < 0.45) {
-            op = 1 - (progress - 0.3) / 0.15;
+          } else if (progress > 0.65 && progress <= 0.76) {
+            op = 1 - (progress - 0.65) / 0.11;
           }
           
           bigLeftTextRef.current.style.opacity = String(Math.max(0, op));
           bigLeftTextRef.current.style.transform = `translateY(${(1 - op) * 14}px)`;
         }
-
-
 
         if (progressFillRef.current) {
           progressFillRef.current.style.transform = `scaleX(${progress})`;
@@ -69,36 +71,66 @@ export function Hero() {
         }
 
         if (logoRevealRef.current) {
-          // Appear after Pixel meets Craft fades (around 0.5)
-          const logoStart = 0.55;
-          const logoEnd = 0.85;
+          // Logo text reveal appears solidly from 0.72 to 0.94
           let logoOp = 0;
-          
-          if (progress > logoStart && progress < logoStart + 0.1) {
-            logoOp = (progress - logoStart) / 0.1;
-          } else if (progress >= logoStart + 0.1 && progress <= logoEnd - 0.1) {
+          if (progress >= 0.72 && progress < 0.82) {
+            logoOp = (progress - 0.72) / 0.1;
+          } else if (progress >= 0.82 && progress <= 0.92) {
             logoOp = 1;
-          } else if (progress > logoEnd - 0.1 && progress < logoEnd) {
-            logoOp = 1 - (progress - (logoEnd - 0.1)) / 0.1;
+          } else if (progress > 0.92 && progress <= 0.98) {
+            logoOp = 1 - (progress - 0.92) / 0.06;
           }
           
           logoRevealRef.current.style.opacity = String(Math.max(0, logoOp));
-          const zOffset = (1 - logoOp) * -100;
-          const rotateX = (1 - logoOp) * 20;
+          const zOffset = (1 - logoOp) * -60;
+          const rotateX = (1 - logoOp) * 10;
           logoRevealRef.current.style.transform = `perspective(1000px) translateZ(${zOffset}px) rotateX(${rotateX}deg)`;
         }
 
-
-        // Update dialogue cards visibility via direct DOM manipulation
+        // Update dialogue cards visibility with ample dwell time so text is never cut short
         if (dialoguesContainerRef.current) {
           const cards = dialoguesContainerRef.current.children;
+          const isMobile = window.innerWidth < 768;
+
           DIALOGUES.forEach((d, i) => {
             const card = cards[i] as HTMLElement;
             if (!card) return;
-            const visible = progress >= d.show && progress <= d.hide;
-            if (visible) {
-              card.style.opacity = "1";
-              card.style.transform = "translateY(0)";
+
+            let cardOp = 0;
+
+            if (isMobile) {
+              // Mobile: Each card gets a generous dwell window
+              const mStart = i === 0 ? 0.18 : i === 1 ? 0.44 : 0.68;
+              const mEnd = i === 0 ? 0.44 : i === 1 ? 0.68 : 0.92;
+              
+              if (progress >= mStart && progress <= mEnd) {
+                if (progress < mStart + 0.05) {
+                  cardOp = (progress - mStart) / 0.05;
+                } else if (progress > mEnd - 0.05) {
+                  cardOp = (mEnd - progress) / 0.05;
+                } else {
+                  cardOp = 1;
+                }
+              }
+            } else {
+              // Desktop: Cards appear in sequence and stay docked on the right
+              const dStart = i === 0 ? 0.20 : i === 1 ? 0.38 : 0.56;
+              const dEnd = 0.90;
+
+              if (progress >= dStart && progress <= dEnd) {
+                if (progress < dStart + 0.06) {
+                  cardOp = (progress - dStart) / 0.06;
+                } else if (progress > dEnd - 0.06) {
+                  cardOp = (dEnd - progress) / 0.06;
+                } else {
+                  cardOp = 1;
+                }
+              }
+            }
+
+            if (cardOp > 0.01) {
+              card.style.opacity = String(cardOp);
+              card.style.transform = `translateY(${(1 - cardOp) * 14}px)`;
               card.style.pointerEvents = "auto";
             } else {
               card.style.opacity = "0";
