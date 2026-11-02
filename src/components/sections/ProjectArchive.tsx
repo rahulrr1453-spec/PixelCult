@@ -65,7 +65,7 @@ const PROJECTS = [
     category: "Full-Stack Webapp",
     description:
       "A complete web application for a sports club enabling members to track events, manage memberships, and stay connected with the community. Features a real-time dashboard, mobile-first design, and a clean administrative interface.",
-    link: "https://bangalore-throwball-premier-league.netlify.app/",
+    link: "https://youngsters-sports-club.netlify.app/",
     local: false,
     screenshots: [
       "/projects/ysc1.png",

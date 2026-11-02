@@ -253,12 +253,12 @@ export function ServicesClient() {
         <section id="training-certification" className="relative z-10 py-16 sm:py-24 px-4 sm:px-6 md:px-12 bg-slate-900/20 border-b border-white/5 overflow-hidden w-full">
           <div className="mx-auto max-w-[1400px]">
             <div className="mb-12 sm:mb-16 text-center">
-              <p className="font-mono text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-accent mb-3">NextSkill Powered by PixelCult // Education</p>
+              <p className="font-mono text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-purple-400 mb-3">NextSkills Powered by PixelCult // Education</p>
               <h2 className="font-sans text-3xl sm:text-5xl font-black text-foreground">
-                Technical Training <span className="text-accent">& Courses.</span>
+                Technical Training <span className="text-purple-400">& Courses.</span>
               </h2>
               <p className="mt-4 mx-auto max-w-3xl text-sm sm:text-base text-zinc-300 md:text-lg">
-                <span className="font-semibold text-white">NextSkill</span>, powered by PixelCult. Rigorous programs tailored to equip you with real-world deployment skills. Train with production architects on current tech stacks and receive an official verified digital credential.
+                <span className="font-semibold text-white">NextSkills</span>, powered by PixelCult. Rigorous programs tailored to equip you with real-world deployment skills. Train with production architects on current tech stacks and receive an official verified digital credential.
               </p>
             </div>
 
@@ -284,25 +284,35 @@ export function ServicesClient() {
                 </TiltCard>
               ))}
 
-              {/* Grid Balancer: Featured NextSkill Certification spotlight */}
-              <TiltCard className="p-6 sm:p-8 border border-accent/20 bg-gradient-to-br from-slate-950 to-emerald-950/20 md:col-span-2 lg:col-span-2">
+              {/* Grid Balancer: Featured NextSkills Certification spotlight */}
+              <TiltCard className="p-6 sm:p-8 border border-purple-500/30 bg-gradient-to-br from-slate-950 via-[#0d051a] to-emerald-950/20 md:col-span-2 lg:col-span-2">
                 <div className="pointer-events-none h-full flex flex-col justify-between" style={{ transform: "translateZ(30px)" }}>
                   <div>
-                    <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-accent/15 border border-accent/30 text-accent">
-                      <Certificate size={32} weight="duotone" />
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                      <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-400">
+                        <Certificate size={32} weight="duotone" />
+                      </div>
+                      <div className="w-fit rounded-xl border border-purple-500/30 bg-black/50 p-2 sm:p-3 backdrop-blur-md">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src="/nextskills.png"
+                          alt="NextSkills Logo"
+                          className="h-10 sm:h-12 w-auto object-contain filter drop-shadow-[0_0_20px_rgba(168,85,247,0.4)]"
+                        />
+                      </div>
                     </div>
                     
-                    <div className="mb-2 font-mono text-xs uppercase tracking-[0.2em] text-accent">Credential Standard</div>
-                    <h3 className="mb-2 text-2xl font-black text-foreground">NextSkill Digital Certification</h3>
+                    <div className="mb-2 font-mono text-xs uppercase tracking-[0.2em] text-purple-400">Credential Standard</div>
+                    <h3 className="mb-2 text-2xl font-black text-foreground">NextSkills Digital Certification</h3>
                     <p className="mb-4 font-mono text-xs uppercase tracking-widest text-brand-accent">Powered by PixelCult</p>
                     <p className="mb-8 text-sm leading-relaxed text-zinc-300 md:text-base">
-                      Upon successful completion of any course track, final review lab modules, and practical assignments, every student receives an official verified digital certificate from <span className="font-semibold text-white">NextSkill, powered by PixelCult</span>. This cryptographically verifiable credential validates your hands-on code capability to potential employers.
+                      Upon successful completion of any course track, final review lab modules, and practical assignments, every student receives an official verified digital certificate from <span className="font-semibold text-white">NextSkills, powered by PixelCult</span>. This cryptographically verifiable credential validates your hands-on code capability to potential employers.
                     </p>
                   </div>
                   
                   <div className="flex flex-wrap gap-2.5 sm:gap-3">
-                    {["NextSkill Powered by PixelCult", "Official Verified Seal", "Direct Recruiter Verification", "Project Verified"].map((feat) => (
-                      <span key={feat} className="rounded-full bg-accent/10 border border-accent/30 px-3 py-1.5 font-mono text-[10px] sm:text-xs text-accent">
+                    {["NextSkills Powered by PixelCult", "Official Verified Seal", "Direct Recruiter Verification", "Project Verified"].map((feat) => (
+                      <span key={feat} className="rounded-full bg-purple-500/10 border border-purple-500/30 px-3 py-1.5 font-mono text-[10px] sm:text-xs text-purple-300">
                         ✓ {feat}
                       </span>
                     ))}

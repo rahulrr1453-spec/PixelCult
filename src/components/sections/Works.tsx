@@ -18,7 +18,7 @@ const PROJECTS = [
     category: "Full-Stack Webapp",
     description: "A complete full-stack web application designed for a sports club to manage memberships, events, and community updates seamlessly.",
     icon: Volleyball,
-    link: "https://bangalore-throwball-premier-league.netlify.app/",
+    link: "https://youngsters-sports-club.netlify.app/",
     color: "text-brand-accent",
   },
   {

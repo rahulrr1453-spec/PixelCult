@@ -21,7 +21,7 @@ export const DIALOGUES: Dialogue[] = [
     show: 0.35,
     hide: 0.55,
     quote: "Bridging the gap between academic theory and industrial excellence.",
-    speaker: "Technical Training",
+    speaker: "NextSkills Academy",
     film: "CORE_LOGIC",
   },
   {

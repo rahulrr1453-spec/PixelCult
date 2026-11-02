@@ -32,7 +32,7 @@ export default function Home() {
           <UpcomingProject />
         </div>
 
-        <div id="training" className="relative bg-transparent overflow-hidden w-full">
+        <div id="nextskills" className="relative bg-transparent overflow-hidden w-full">
           <Training />
         </div>
 

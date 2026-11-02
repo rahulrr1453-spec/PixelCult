@@ -3,6 +3,7 @@
 import { Navbar } from "@/components/ui/Navbar";
 import { Works } from "@/components/sections/Works";
 import { UpcomingProject } from "@/components/sections/UpcomingProject";
+import { Training } from "@/components/sections/Training";
 import { ProjectArchive } from "@/components/sections/ProjectArchive";
 import { Footer } from "@/components/sections/Footer";
 import { motion } from "framer-motion";
@@ -129,6 +130,17 @@ export default function WorkPage() {
           />
           <div className="relative z-10">
             <UpcomingProject />
+          </div>
+        </div>
+
+        {/* Section: NextSkills Academy & Training */}
+        <div className="relative overflow-hidden w-full">
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{ background: "rgba(2,6,23,0.2)" }}
+          />
+          <div className="relative z-10">
+            <Training />
           </div>
         </div>
 
